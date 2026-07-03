@@ -1,0 +1,44 @@
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.tab,
+.tabActive {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--text-secondary);
+}
+
+.tabActive {
+  color: var(--accent-cyan);
+  background: var(--bg-raised);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.headline {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.meta {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.stars {
+  color: var(--accent-green);
+}

@@ -1,5 +1,6 @@
 import { CalendarWidget } from '../widgets/Calendar/CalendarWidget'
 import { EmailsWidget } from '../widgets/Emails/EmailsWidget'
+import { NewsWidget } from '../widgets/News/NewsWidget'
 import styles from './DashboardGrid.module.css'
 
 export function DashboardGrid() {
@@ -8,7 +9,9 @@ export function DashboardGrid() {
       <div className={styles.calendar}>
         <CalendarWidget />
       </div>
-      <div className={styles.news} id="news" />
+      <div className={styles.news}>
+        <NewsWidget />
+      </div>
       <div className={styles.tweets} id="tweets" />
       <div className={styles.emails}>
         <EmailsWidget />
