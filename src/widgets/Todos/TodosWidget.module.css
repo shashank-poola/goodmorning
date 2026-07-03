@@ -1,0 +1,34 @@
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  border-left: 2px solid transparent;
+  padding-left: 8px;
+}
+
+.item[data-priority='high'] { border-left-color: var(--accent-rose); }
+.item[data-priority='medium'] { border-left-color: var(--accent-cyan); }
+
+.label,
+.done {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.done span {
+  text-decoration: line-through;
+  color: var(--accent-green);
+  opacity: 0.7;
+}
+
+.label input,
+.done input {
+  accent-color: var(--accent-green);
+}
