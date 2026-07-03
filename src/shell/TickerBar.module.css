@@ -1,0 +1,42 @@
+.ticker {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  background: var(--bg-panel);
+  min-height: 38px;
+}
+
+.track {
+  display: inline-flex;
+  gap: 36px;
+  padding: 9px 18px;
+  white-space: nowrap;
+  width: max-content;
+  animation: scroll 45s linear infinite;
+}
+
+.ticker:hover .track {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.item {
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.symbol {
+  font-weight: 600;
+  color: var(--accent-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.price { color: var(--text-primary); }
+.up { color: var(--accent-green); font-size: 12px; }
+.down { color: var(--accent-rose); font-size: 12px; }
