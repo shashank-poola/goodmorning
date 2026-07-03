@@ -17,7 +17,19 @@ function Item({ s }: { s: StockQuote }) {
 }
 
 export function TickerBar() {
-  const { data } = useWidgetData(provider.getStocks)
+  const { data, error, retry } = useWidgetData(provider.getStocks)
+  if (error) {
+    return (
+      <div className={styles.ticker}>
+        <p className={styles.state}>
+          Market data unavailable ·{' '}
+          <button type="button" className={styles.retry} onClick={retry}>
+            Retry
+          </button>
+        </p>
+      </div>
+    )
+  }
   if (!data) return <div className={styles.ticker} aria-hidden="true" />
   return (
     <div className={styles.ticker} title="Holdings vs yesterday">

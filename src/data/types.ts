@@ -1,5 +1,7 @@
 export type AccentColor = 'cyan' | 'green' | 'violet' | 'rose'
 
+export type ComposeTarget = 'LinkedIn' | 'X' | 'Substack' | 'Newsletter'
+
 export interface Quote {
   text: string
   author: string

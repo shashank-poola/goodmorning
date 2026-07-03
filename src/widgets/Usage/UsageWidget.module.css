@@ -4,6 +4,8 @@
   gap: 14px;
 }
 
+.headline { display: flex; align-items: baseline; gap: 8px; }
+
 .big {
   font-size: 30px;
   font-weight: 600;

@@ -2,6 +2,10 @@ import { act, render, screen } from '@testing-library/react'
 import { provider } from '../data/providerFactory'
 import { TopBar } from './TopBar'
 
+afterEach(() => {
+  vi.restoreAllMocks()
+})
+
 it('shows the daily quote from the provider', async () => {
   render(<TopBar />)
   expect(await screen.findByText(/getting started/i)).toBeInTheDocument()

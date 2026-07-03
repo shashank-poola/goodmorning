@@ -40,3 +40,15 @@
 .price { color: var(--text-primary); }
 .up { color: var(--accent-green); font-size: 12px; }
 .down { color: var(--accent-rose); font-size: 12px; }
+
+.state {
+  margin: 0;
+  padding: 9px 18px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.retry {
+  color: var(--accent-cyan);
+  text-decoration: underline;
+}

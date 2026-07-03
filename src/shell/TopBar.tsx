@@ -30,7 +30,7 @@ function Clock() {
 
 const FALLBACK_QUOTE = {
   text: 'Every morning is a fresh beginning.',
-  author: 'proverb',
+  author: 'Proverb',
 }
 
 export function TopBar() {

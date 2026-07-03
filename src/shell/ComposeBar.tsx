@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import type { ComposeTarget } from '../data/types'
 import styles from './ComposeBar.module.css'
 
-const PLATFORMS = ['LinkedIn', 'X', 'Substack', 'Newsletter'] as const
+const PLATFORMS: readonly ComposeTarget[] = ['LinkedIn', 'X', 'Substack', 'Newsletter']
 
 export function ComposeBar() {
   const [active, setActive] = useState<Set<string>>(new Set(PLATFORMS))

@@ -31,7 +31,7 @@ export function CalendarWidget() {
                     <span className={styles.details}>
                       <span className={styles.title}>{e.title}</span>
                       {(e.location || e.meetLink) && (
-                        <span className={styles.meta}>{e.location ?? 'Video call ↗'}</span>
+                        <span className={styles.meta}>{e.location || 'Video call ↗'}</span>
                       )}
                     </span>
                   </li>

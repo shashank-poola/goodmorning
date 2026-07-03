@@ -13,6 +13,12 @@ it('renders today’s events with source color dots', async () => {
   expect(screen.getAllByTestId('source-dot').length).toBeGreaterThan(2)
 })
 
+it('renders a physical location when present, and falls back to Video call for meet-link-only events', async () => {
+  render(<CalendarWidget />)
+  expect(await screen.findByText('Room 4B')).toBeInTheDocument()
+  expect(screen.getAllByText('Video call ↗').length).toBeGreaterThan(0)
+})
+
 it('shows error state with retry when provider fails', async () => {
   vi.spyOn(provider, 'getCalendar').mockRejectedValueOnce(new Error('down'))
   render(<CalendarWidget />)

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { provider } from '../data/providerFactory'
 import { TickerBar } from './TickerBar'
 
@@ -13,9 +13,14 @@ it('renders each stock twice (duplicated marquee track) with signed change', asy
   expect(screen.getAllByText('−2.1%')[0]).toBeInTheDocument()
 })
 
-it('renders an empty bar without crashing when the provider rejects', async () => {
-  vi.spyOn(provider, 'getStocks').mockRejectedValueOnce(new Error('network error'))
+it('renders an empty aria-hidden bar while loading, without crashing', () => {
   const { container } = render(<TickerBar />)
-  await waitFor(() => expect(container.querySelectorAll('span').length).toBe(0))
   expect(container.querySelector('[aria-hidden="true"]')).toBeInTheDocument()
+})
+
+it('shows a quiet inline error with retry when the provider rejects', async () => {
+  vi.spyOn(provider, 'getStocks').mockRejectedValueOnce(new Error('network error'))
+  render(<TickerBar />)
+  expect(await screen.findByText(/market data unavailable/i)).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /retry/i })).toBeInTheDocument()
 })

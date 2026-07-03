@@ -40,6 +40,12 @@ Every widget follows the same pattern:
 renders skeleton / error+Retry / empty states uniformly, so a failing API
 degrades one widget gracefully — never the page.
 
+**Deliberate exception:** `TopBar`'s quote and the `TickerBar` are shell
+components, not `Panel` widgets, so they don't go through `WidgetBody`. The
+quote degrades to a static fallback on error (quiet degradation, no retry in
+the top bar); the ticker shows a quiet inline error with a Retry button
+instead of the skeleton/error pattern above.
+
 ## Adding a widget
 
 1. Add the data type to `types.ts`, a method to `DataProvider`, mock data
