@@ -1,0 +1,19 @@
+:root {
+  --bg-base: #070b12;
+  --bg-panel: #0d1420;
+  --bg-raised: #121b2b;
+  --border: #1a2432;
+  --text-primary: #e6edf7;
+  --text-secondary: #8b98ac;
+  --accent-cyan: #67e8f9;
+  --accent-green: #6ee7b7;
+  --accent-violet: #a78bfa;
+  --accent-rose: #fda4af;
+
+  --font-ui: 'Instrument Sans', system-ui, sans-serif;
+  --font-display: 'Newsreader', Georgia, serif;
+
+  --radius: 10px;
+  --gap: 16px;
+  --glow-cyan: 0 0 12px rgba(103, 232, 249, 0.35);
+}
