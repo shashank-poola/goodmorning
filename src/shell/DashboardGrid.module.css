@@ -1,0 +1,77 @@
+.grid {
+  flex: 1;
+  display: grid;
+  gap: var(--gap);
+  padding: var(--gap) 24px;
+  grid-template-columns: 1.15fr 1fr 1fr 1fr;
+  grid-template-rows: minmax(260px, auto) minmax(220px, auto) minmax(200px, auto);
+  grid-template-areas:
+    'calendar news news tweets'
+    'emails linkedin linkedin linkedin'
+    'todos recap usage reminders';
+  min-width: 0;
+}
+
+.grid > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  animation: fadeUp 0.5s both;
+}
+
+.grid > div:nth-child(2) { animation-delay: 60ms; }
+.grid > div:nth-child(3) { animation-delay: 120ms; }
+.grid > div:nth-child(4) { animation-delay: 180ms; }
+.grid > div:nth-child(5) { animation-delay: 240ms; }
+.grid > div:nth-child(6) { animation-delay: 300ms; }
+.grid > div:nth-child(7) { animation-delay: 360ms; }
+.grid > div:nth-child(8) { animation-delay: 420ms; }
+.grid > div:nth-child(9) { animation-delay: 480ms; }
+
+.grid > div > section {
+  flex: 1;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.calendar { grid-area: calendar; }
+.news { grid-area: news; }
+.tweets { grid-area: tweets; }
+.emails { grid-area: emails; }
+.linkedin { grid-area: linkedin; }
+.todos { grid-area: todos; }
+.recap { grid-area: recap; }
+.usage { grid-area: usage; }
+.reminders { grid-area: reminders; }
+
+@media (max-width: 1199px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      'calendar news'
+      'emails tweets'
+      'linkedin linkedin'
+      'todos recap'
+      'usage reminders';
+  }
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'calendar' 'emails' 'news' 'tweets' 'linkedin' 'todos' 'recap' 'usage' 'reminders';
+    padding-bottom: 72px; /* clear the fixed bottom sidebar */
+  }
+}
