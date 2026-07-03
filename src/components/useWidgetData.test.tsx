@@ -22,22 +22,26 @@ it('goes loading → error, and retry refetches', async () => {
   await waitFor(() => expect(result.current.data).toBe('recovered'))
 })
 
-it('does not set state after unmount when the fetch resolves late', async () => {
-  const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-  let resolveFetch: (value: string) => void = () => {}
-  const fetcher = () =>
-    new Promise<string>((resolve) => {
-      resolveFetch = resolve
-    })
+it('ignores a stale fetch that resolves after retry has already delivered fresh data', async () => {
+  let resolveFirst: (value: string) => void = () => {}
+  let calls = 0
+  const fetcher = () => {
+    calls++
+    return calls === 1
+      ? new Promise<string>((resolve) => {
+          resolveFirst = resolve
+        })
+      : Promise.resolve('new')
+  }
 
-  const { unmount } = renderHook(() => useWidgetData(fetcher))
-  unmount()
+  const { result } = renderHook(() => useWidgetData(fetcher))
+  act(() => result.current.retry())
+  await waitFor(() => expect(result.current.data).toBe('new'))
 
   await act(async () => {
-    resolveFetch('too late')
+    resolveFirst('stale')
     await Promise.resolve()
   })
 
-  expect(errorSpy).not.toHaveBeenCalled()
-  errorSpy.mockRestore()
+  expect(result.current.data).toBe('new')
 })
