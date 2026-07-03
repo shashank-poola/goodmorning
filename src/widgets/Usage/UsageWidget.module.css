@@ -1,0 +1,54 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.headline { display: flex; align-items: baseline; gap: 8px; }
+
+.big {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  font-variant-numeric: tabular-nums;
+  margin-right: 8px;
+}
+
+.sub { color: var(--text-secondary); font-size: 12px; }
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.rowLabel { width: 70px; color: var(--text-secondary); flex-shrink: 0; }
+
+.barTrack {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-raised);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
+  border-radius: 4px;
+}
+
+.rowValue {
+  width: 44px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,37 @@
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.tweet {
+  display: flex;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  color: var(--accent-violet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name { font-weight: 600; font-size: 13px; }
+.handle { color: var(--text-secondary); font-weight: 400; }
+.text { font-size: 13px; }
+.engagement { color: var(--text-secondary); font-size: 12px; }
