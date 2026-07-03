@@ -41,7 +41,7 @@ export function WidgetBody<T>({ data, loading, error, retry, isEmpty, children }
     return (
       <p className={styles.state}>
         Couldn&rsquo;t load.{' '}
-        <button className={styles.retry} onClick={retry}>
+        <button type="button" className={styles.retry} onClick={retry}>
           Retry
         </button>
       </p>

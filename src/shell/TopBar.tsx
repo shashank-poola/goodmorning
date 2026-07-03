@@ -28,15 +28,21 @@ function Clock() {
   )
 }
 
+const FALLBACK_QUOTE = {
+  text: 'Every morning is a fresh beginning.',
+  author: 'proverb',
+}
+
 export function TopBar() {
-  const { data } = useWidgetData(provider.getQuote)
+  const { data, error } = useWidgetData(provider.getQuote)
+  const quote = data ?? (error ? FALLBACK_QUOTE : null)
   return (
     <header className={styles.topbar} id="top">
       <p className={styles.quote}>
-        {data ? (
+        {quote ? (
           <>
-            <span className={styles.quoteText}>&ldquo;{data.text}&rdquo;</span>
-            <span className={styles.author}> — {data.author}</span>
+            <span className={styles.quoteText}>&ldquo;{quote.text}&rdquo;</span>
+            <span className={styles.author}> — {quote.author}</span>
           </>
         ) : (
           <span className={styles.quoteText}>&nbsp;</span>

@@ -15,7 +15,13 @@ export function Sidebar() {
   return (
     <nav className={styles.sidebar} aria-label="Sections">
       {ITEMS.map((item) => (
-        <button key={item.id} className={styles.item} onClick={() => go(item.id)} title={item.label}>
+        <button
+          key={item.id}
+          type="button"
+          className={styles.item}
+          onClick={() => go(item.id)}
+          title={item.label}
+        >
           <span aria-hidden="true" className={styles.icon}>
             {item.icon}
           </span>

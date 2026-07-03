@@ -17,6 +17,10 @@
   padding-left: 14px;
 }
 
+.quoteText {
+  color: var(--text-primary);
+}
+
 .author {
   color: var(--text-secondary);
   font-size: 15px;
