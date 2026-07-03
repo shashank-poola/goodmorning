@@ -56,5 +56,9 @@
 }
 
 @media (max-width: 767px) {
-  .compose { flex-wrap: wrap; margin-bottom: 60px; }
+  .compose {
+    flex-wrap: wrap;
+    margin-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+  .input { flex-basis: 100%; }
 }
