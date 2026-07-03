@@ -2,6 +2,7 @@ import { Sidebar } from './shell/Sidebar'
 import { TopBar } from './shell/TopBar'
 import { DashboardGrid } from './shell/DashboardGrid'
 import { TickerBar } from './shell/TickerBar'
+import { ComposeBar } from './shell/ComposeBar'
 
 export function App() {
   return (
@@ -12,6 +13,7 @@ export function App() {
         <DashboardGrid />
       </div>
       <TickerBar />
+      <ComposeBar />
     </div>
   )
 }
