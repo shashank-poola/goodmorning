@@ -1,19 +1,25 @@
 :root {
-  --bg-base: #070b12;
-  --bg-panel: #0d1420;
-  --bg-raised: #121b2b;
-  --border: #1a2432;
-  --text-primary: #e6edf7;
-  --text-secondary: #8b98ac;
-  --accent-cyan: #67e8f9;
-  --accent-green: #6ee7b7;
-  --accent-violet: #a78bfa;
-  --accent-rose: #fda4af;
+  /* Midnight Luxe — charcoal base, champagne gold, muted color-coding */
+  --bg-base: #0f1012;
+  --bg-panel: #17181b;
+  --bg-raised: #1e1f23;
+  --border: #26272b;
+  --text-primary: #ede9e1;
+  --text-secondary: #97928a;
+
+  /* Accents map to roles, not decoration:
+     gold = primary/live · sage = positive · blue = calm/social · clay = urgent */
+  --accent-gold: #d4b678;
+  --accent-sage: #8fa98c;
+  --accent-blue: #7c93a8;
+  --accent-clay: #c08457;
 
   --font-ui: 'Instrument Sans', system-ui, sans-serif;
   --font-display: 'Newsreader', Georgia, serif;
 
   --radius: 10px;
   --gap: 16px;
-  --glow-cyan: 0 0 12px rgba(103, 232, 249, 0.35);
+  --glow-gold: 0 0 10px rgba(212, 182, 120, 0.28);
+  --elevation: 0 1px 2px rgba(0, 0, 0, 0.28);
+  --hairline-gold: rgba(212, 182, 120, 0.22);
 }

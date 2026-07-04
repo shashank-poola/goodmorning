@@ -1,4 +1,4 @@
-export type AccentColor = 'cyan' | 'green' | 'violet' | 'rose'
+export type AccentColor = 'gold' | 'sage' | 'blue' | 'clay'
 
 export type ComposeTarget = 'LinkedIn' | 'X' | 'Substack' | 'Newsletter'
 

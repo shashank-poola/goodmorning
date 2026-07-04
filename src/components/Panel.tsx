@@ -9,7 +9,7 @@ interface PanelProps {
   children: ReactNode
 }
 
-export function Panel({ title, accent = 'cyan', id, children }: PanelProps) {
+export function Panel({ title, accent = 'gold', id, children }: PanelProps) {
   return (
     <section className={styles.panel} id={id} data-accent={accent}>
       <h2 className={styles.title}>{title}</h2>

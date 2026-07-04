@@ -10,8 +10,8 @@
   padding-left: 8px;
 }
 
-.item[data-priority='high'] { border-left-color: var(--accent-rose); }
-.item[data-priority='medium'] { border-left-color: var(--accent-cyan); }
+.item[data-priority='high'] { border-left-color: var(--accent-clay); }
+.item[data-priority='medium'] { border-left-color: var(--accent-gold); }
 
 .label,
 .done {
@@ -24,11 +24,11 @@
 
 .done span {
   text-decoration: line-through;
-  color: var(--accent-green);
+  color: var(--accent-sage);
   opacity: 0.7;
 }
 
 .label input,
 .done input {
-  accent-color: var(--accent-green);
+  accent-color: var(--accent-sage);
 }

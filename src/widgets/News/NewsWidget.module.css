@@ -13,7 +13,7 @@
 }
 
 .tabActive {
-  color: var(--accent-cyan);
+  color: var(--accent-gold);
   background: var(--bg-raised);
 }
 
@@ -40,5 +40,5 @@
 }
 
 .stars {
-  color: var(--accent-green);
+  color: var(--accent-sage);
 }

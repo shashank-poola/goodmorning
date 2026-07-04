@@ -19,7 +19,7 @@
 
 .input:focus {
   outline: none;
-  border-color: var(--accent-violet);
+  border-color: var(--accent-blue);
 }
 
 .chips {
@@ -37,8 +37,8 @@
 }
 
 .chipActive {
-  color: var(--accent-violet);
-  border-color: var(--accent-violet);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
   background: var(--bg-raised);
 }
 

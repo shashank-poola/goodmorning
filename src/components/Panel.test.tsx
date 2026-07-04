@@ -4,7 +4,7 @@ import { Panel, WidgetBody } from './Panel'
 
 it('renders title and children', () => {
   render(
-    <Panel title="Calendar" accent="cyan" id="calendar">
+    <Panel title="Calendar" accent="gold" id="calendar">
       <p>body</p>
     </Panel>,
   )

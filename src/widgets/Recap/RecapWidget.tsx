@@ -6,7 +6,7 @@ import styles from './RecapWidget.module.css'
 export function RecapWidget() {
   const state = useWidgetData(provider.getYesterdayRecap)
   return (
-    <Panel title="Yesterday Recap" accent="cyan" id="recap">
+    <Panel title="Yesterday Recap" accent="gold" id="recap">
       <WidgetBody {...state} isEmpty={(d) => d.bullets.length === 0}>
         {({ bullets }) => (
           <ul className={styles.list}>

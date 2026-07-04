@@ -13,7 +13,7 @@
   font-size: 20px;
   font-style: italic;
   color: var(--text-primary);
-  border-left: 2px solid var(--accent-green);
+  border-left: 2px solid var(--accent-sage);
   padding-left: 14px;
 }
 
@@ -44,6 +44,6 @@
   font-size: 26px;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  color: var(--accent-cyan);
-  text-shadow: var(--glow-cyan);
+  color: var(--accent-gold);
+  text-shadow: var(--glow-gold);
 }

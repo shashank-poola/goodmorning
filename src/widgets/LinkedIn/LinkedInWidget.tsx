@@ -6,7 +6,7 @@ import styles from './LinkedInWidget.module.css'
 export function LinkedInWidget() {
   const state = useWidgetData(provider.getLinkedIn)
   return (
-    <Panel title="LinkedIn" accent="violet" id="linkedin">
+    <Panel title="LinkedIn" accent="blue" id="linkedin">
       <WidgetBody {...state}>
         {({ stats, messages }) => (
           <div className={styles.columns}>

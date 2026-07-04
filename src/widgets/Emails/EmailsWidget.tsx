@@ -10,10 +10,10 @@ function fmt(iso: string): string {
 export function EmailsWidget() {
   const state = useWidgetData(provider.getEmails)
   return (
-    <Panel title="Important Emails" accent="rose" id="emails">
+    <Panel title="Important Emails" accent="clay" id="emails">
       <WidgetBody {...state} isEmpty={(d) => d.emails.length === 0}>
         {({ mailboxes, emails }) => {
-          const colorOf = (id: string) => mailboxes.find((m) => m.id === id)?.color ?? 'cyan'
+          const colorOf = (id: string) => mailboxes.find((m) => m.id === id)?.color ?? 'gold'
           return (
             <ul className={styles.list}>
               {emails.map((e) => (

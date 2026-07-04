@@ -10,11 +10,11 @@ function fmt(iso: string): string {
 export function CalendarWidget() {
   const state = useWidgetData(provider.getCalendar)
   return (
-    <Panel title="Today" accent="cyan" id="calendar">
+    <Panel title="Today" accent="gold" id="calendar">
       <WidgetBody {...state} isEmpty={(d) => d.events.length === 0}>
         {({ sources, events }) => {
           const colorOf = (sourceId: string) =>
-            sources.find((s) => s.id === sourceId)?.color ?? 'cyan'
+            sources.find((s) => s.id === sourceId)?.color ?? 'gold'
           const now = Date.now()
           return (
             <ul className={styles.list}>

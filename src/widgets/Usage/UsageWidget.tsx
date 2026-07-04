@@ -12,7 +12,7 @@ export function fmtTokens(n: number): string {
 export function UsageWidget() {
   const state = useWidgetData(provider.getUsageStats)
   return (
-    <Panel title="Claude Code Usage" accent="cyan" id="usage">
+    <Panel title="Claude Code Usage" accent="gold" id="usage">
       <WidgetBody {...state}>
         {({ yesterday, dayBefore }) => {
           const max = Math.max(yesterday.tokens, dayBefore.tokens)

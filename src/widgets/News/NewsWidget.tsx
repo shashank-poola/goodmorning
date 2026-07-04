@@ -12,7 +12,7 @@ export function NewsWidget() {
   const repos = useWidgetData(provider.getRepoTrends)
 
   return (
-    <Panel title="News & GitHub" accent="cyan" id="news">
+    <Panel title="News & GitHub" accent="gold" id="news">
       <div className={styles.tabs} role="tablist">
         {(['tech', 'world', 'github'] as const).map((t) => (
           <button

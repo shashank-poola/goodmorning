@@ -9,7 +9,7 @@
 .big {
   font-size: 30px;
   font-weight: 600;
-  color: var(--accent-cyan);
+  color: var(--accent-gold);
   font-variant-numeric: tabular-nums;
   margin-right: 8px;
 }
@@ -42,7 +42,7 @@
 .bar {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-blue));
   border-radius: 4px;
 }
 

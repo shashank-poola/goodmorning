@@ -23,7 +23,7 @@
 .big {
   font-size: 30px;
   font-weight: 600;
-  color: var(--accent-green);
+  color: var(--accent-sage);
   font-variant-numeric: tabular-nums;
 }
 
@@ -48,7 +48,7 @@
 
 .reply {
   align-self: flex-start;
-  color: var(--accent-violet);
+  color: var(--accent-blue);
   font-size: 12px;
   padding: 2px 0;
 }

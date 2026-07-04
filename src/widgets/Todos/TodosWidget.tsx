@@ -30,7 +30,7 @@ function TodoList({ initial }: { initial: Todo[] }) {
 export function TodosWidget() {
   const state = useWidgetData(provider.getTodos)
   return (
-    <Panel title="To-Do" accent="green" id="todos">
+    <Panel title="To-Do" accent="sage" id="todos">
       <WidgetBody {...state} isEmpty={(d) => d.length === 0}>
         {(todos) => <TodoList initial={todos} />}
       </WidgetBody>

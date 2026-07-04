@@ -22,7 +22,7 @@ function countdown(n: number): string {
 export function RemindersWidget() {
   const state = useWidgetData(provider.getReminders)
   return (
-    <Panel title="Reminders" accent="green" id="reminders">
+    <Panel title="Reminders" accent="sage" id="reminders">
       <WidgetBody {...state} isEmpty={(d) => d.length === 0}>
         {(reminders) => (
           <ul className={styles.list}>

@@ -31,15 +31,15 @@ function daysFromNow(n: number): string {
 }
 
 const SOURCES: CalendarSource[] = [
-  { id: 'work', name: 'Work', color: 'cyan' },
-  { id: 'personal', name: 'Personal', color: 'green' },
-  { id: 'side', name: 'Side project', color: 'violet' },
+  { id: 'work', name: 'Work', color: 'gold' },
+  { id: 'personal', name: 'Personal', color: 'sage' },
+  { id: 'side', name: 'Side project', color: 'blue' },
 ]
 
 const MAILBOXES: Mailbox[] = [
-  { id: 'work', name: 'Work', color: 'cyan' },
-  { id: 'personal', name: 'Personal', color: 'green' },
-  { id: 'newsletters', name: 'Newsletters', color: 'violet' },
+  { id: 'work', name: 'Work', color: 'gold' },
+  { id: 'personal', name: 'Personal', color: 'sage' },
+  { id: 'newsletters', name: 'Newsletters', color: 'blue' },
 ]
 
 export class MockDataProvider implements DataProvider {

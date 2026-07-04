@@ -10,7 +10,7 @@ export function compact(n: number): string {
 export function TweetsWidget() {
   const state = useWidgetData(provider.getTweets)
   return (
-    <Panel title="Tweets" accent="violet" id="tweets">
+    <Panel title="Tweets" accent="blue" id="tweets">
       <WidgetBody {...state} isEmpty={(d) => d.length === 0}>
         {(tweets) => (
           <ul className={styles.list}>

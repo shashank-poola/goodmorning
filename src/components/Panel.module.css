@@ -6,11 +6,13 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  transition: border-color 0.3s;
+  box-shadow: var(--elevation);
+  transition: border-color 0.45s ease, box-shadow 0.45s ease;
 }
 
 .panel:hover {
-  border-color: color-mix(in srgb, var(--border) 60%, var(--accent-cyan));
+  border-color: var(--hairline-gold);
+  box-shadow: var(--elevation), 0 0 0 1px var(--hairline-gold);
 }
 
 .title {
@@ -22,10 +24,10 @@
   margin-bottom: 10px;
 }
 
-.panel[data-accent='green'] .title { color: var(--accent-green); }
-.panel[data-accent='violet'] .title { color: var(--accent-violet); }
-.panel[data-accent='rose'] .title { color: var(--accent-rose); }
-.panel[data-accent='cyan'] .title { color: var(--text-secondary); }
+.panel[data-accent='sage'] .title { color: var(--accent-sage); }
+.panel[data-accent='blue'] .title { color: var(--accent-blue); }
+.panel[data-accent='clay'] .title { color: var(--accent-clay); }
+.panel[data-accent='gold'] .title { color: var(--text-secondary); }
 
 .body {
   flex: 1;
@@ -56,6 +58,6 @@
 }
 
 .retry {
-  color: var(--accent-cyan);
+  color: var(--accent-gold);
   text-decoration: underline;
 }
