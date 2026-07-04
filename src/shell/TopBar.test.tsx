@@ -12,15 +12,20 @@ it('shows the daily quote from the provider', async () => {
   expect(screen.getByText(/mark twain/i)).toBeInTheDocument()
 })
 
-it('renders a live clock that ticks every second', async () => {
+it('renders three live time-zone clocks (IST/GMT/EST) that tick every second', async () => {
   vi.useFakeTimers()
-  vi.setSystemTime(new Date('2026-07-03T08:15:00'))
+  // Anchor to a fixed UTC instant so expectations are machine-timezone-independent.
+  vi.setSystemTime(new Date('2026-07-03T12:00:00Z'))
   render(<TopBar />)
-  expect(screen.getByTestId('clock')).toHaveTextContent('08:15:00')
+  // GMT = UTC, IST = UTC+5:30, EST(New York, July = EDT) = UTC-4
+  expect(screen.getByTestId('clock-GMT')).toHaveTextContent('12:00:00')
+  expect(screen.getByTestId('clock-IST')).toHaveTextContent('17:30:00')
+  expect(screen.getByTestId('clock-EST')).toHaveTextContent('08:00:00')
   await act(async () => {
     vi.advanceTimersByTime(1000)
   })
-  expect(screen.getByTestId('clock')).toHaveTextContent('08:15:01')
+  expect(screen.getByTestId('clock-GMT')).toHaveTextContent('12:00:01')
+  expect(screen.getByTestId('clock-IST')).toHaveTextContent('17:30:01')
   vi.useRealTimers()
 })
 

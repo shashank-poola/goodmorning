@@ -1,9 +1,9 @@
 :root {
   /* Midnight Luxe — charcoal base, champagne gold, muted color-coding */
   --bg-base: #0f1012;
-  --bg-panel: #17181b;
-  --bg-raised: #1e1f23;
-  --border: #26272b;
+  --bg-panel: #1f2127;
+  --bg-raised: #282a30;
+  --border: #100f12;
   --text-primary: #ede9e1;
   --text-secondary: #97928a;
 

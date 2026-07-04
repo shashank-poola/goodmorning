@@ -3,6 +3,12 @@ import { provider } from '../data/providerFactory'
 import { useWidgetData } from '../components/useWidgetData'
 import styles from './TopBar.module.css'
 
+const ZONES: Array<{ label: string; tz: string }> = [
+  { label: 'IST', tz: 'Asia/Kolkata' },
+  { label: 'GMT', tz: 'UTC' },
+  { label: 'EST', tz: 'America/New_York' },
+]
+
 function Clock() {
   const [now, setNow] = useState(() => new Date())
   useEffect(() => {
@@ -10,20 +16,27 @@ function Clock() {
     return () => clearInterval(id)
   }, [])
 
-  const time = now.toLocaleTimeString('en-GB', { hour12: false })
   const date = now.toLocaleDateString('en-GB', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
     year: 'numeric',
+    timeZone: 'Asia/Kolkata',
   })
 
   return (
     <div className={styles.clockWrap}>
       <span className={styles.date}>{date}</span>
-      <span className={styles.time} data-testid="clock">
-        {time}
-      </span>
+      <div className={styles.clocks}>
+        {ZONES.map((z) => (
+          <div key={z.label} className={styles.clock}>
+            <span className={styles.zoneLabel}>{z.label}</span>
+            <span className={styles.time} data-testid={`clock-${z.label}`}>
+              {now.toLocaleTimeString('en-GB', { hour12: false, timeZone: z.tz })}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
