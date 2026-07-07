@@ -29,8 +29,15 @@ export interface AuthStatusAccount {
   color: AccentColor
 }
 
+export interface AuthStatusUser {
+  name: string
+  email: string
+  initial: string
+}
+
 export interface AuthStatusResponse {
   connected: boolean
+  user: AuthStatusUser | null
   accounts: AuthStatusAccount[]
 }
 
@@ -45,6 +52,7 @@ export interface StoredGoogleTokens {
 export interface StoredAccount {
   id: string
   email: string
+  name: string
   sub: string
   color: AccentColor
   tokens: StoredGoogleTokens

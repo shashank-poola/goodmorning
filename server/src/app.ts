@@ -1,27 +1,34 @@
 import { Hono } from 'hono'
 import type { ServerConfig } from './config'
 import { isAppError } from './lib/errors'
+import { GoogleAccountsService } from './services/googleAccounts'
 import { GoogleCalendarService } from './services/googleCalendar'
+import { GoogleGmailService } from './services/googleGmail'
+import type { AuthStatusResponse, AuthStatusUser, StoredAccount } from './types/calendar'
 
 export function createApp(config: ServerConfig) {
   const app = new Hono()
-  const calendarService = new GoogleCalendarService(config)
+  const accounts = new GoogleAccountsService(config)
+  const calendarService = new GoogleCalendarService(accounts, config)
+  const gmailService = new GoogleGmailService(accounts)
 
   app.get('/api/health', (c) =>
     c.json({ ok: true, service: 'goodmorning-server' }),
   )
 
   app.get('/api/auth/status', async (c) => {
-    const accounts = await calendarService.listConnectedAccounts()
-    return c.json({
-      connected: accounts.length > 0,
-      accounts: accounts.map((a) => ({
+    const accountList = await accounts.listAccounts()
+    const body: AuthStatusResponse = {
+      connected: accountList.length > 0,
+      user: primaryUser(accountList),
+      accounts: accountList.map((a) => ({
         id: a.id,
         email: a.email,
-        name: a.email,
+        name: a.name,
         color: a.color,
       })),
-    })
+    }
+    return c.json(body)
   })
 
   app.get('/api/calendar', async (c) => {
@@ -33,7 +40,16 @@ export function createApp(config: ServerConfig) {
     }
   })
 
-  app.get('/auth/google', (c) => c.redirect(calendarService.getAuthUrl()))
+  app.get('/api/emails', async (c) => {
+    try {
+      const data = await gmailService.getMergedEmails()
+      return c.json(data)
+    } catch (error) {
+      return errorResponse(c, error)
+    }
+  })
+
+  app.get('/auth/google', (c) => c.redirect(accounts.getAuthUrl()))
 
   app.get('/auth/google/callback', async (c) => {
     const code = c.req.query('code')
@@ -42,7 +58,7 @@ export function createApp(config: ServerConfig) {
     }
 
     try {
-      await calendarService.handleCallback(code)
+      await accounts.handleCallback(code)
       return c.redirect(`${config.frontendUrl}?auth=connected`)
     } catch {
       return c.redirect(`${config.frontendUrl}?auth=failed`)
@@ -50,6 +66,20 @@ export function createApp(config: ServerConfig) {
   })
 
   return app
+}
+
+function primaryUser(accounts: StoredAccount[]): AuthStatusUser | null {
+  if (accounts.length === 0) return null
+  const sorted = [...accounts].sort(
+    (a, b) => Date.parse(b.connectedAt) - Date.parse(a.connectedAt),
+  )
+  const primary = sorted[0]!
+  const name = primary.name || primary.email
+  return {
+    name,
+    email: primary.email,
+    initial: name.charAt(0).toUpperCase(),
+  }
 }
 
 function errorResponse(c: import('hono').Context, error: unknown) {

@@ -20,6 +20,7 @@ async function makeStore() {
 const sampleAccount = (): StoredAccount => ({
   id: 'google-abc',
   email: 'work@gmail.com',
+  name: 'Work Account',
   sub: 'abc',
   color: 'gold',
   tokens: { access_token: 'at', refresh_token: 'rt', expiry_date: Date.now() + 3600_000 },

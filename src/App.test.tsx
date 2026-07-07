@@ -1,11 +1,28 @@
 import { render, screen } from '@testing-library/react'
+import { AuthProvider } from './hooks/AuthContext'
 import { ThemeProvider } from './hooks/ThemeContext'
 import { App } from './App'
 
-it('renders topbar clock and sidebar navigation', () => {
+beforeEach(() => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ connected: false, user: null, accounts: [] }),
+    }),
+  )
+})
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
+
+it('renders topbar clock and sidebar navigation', async () => {
   render(
     <ThemeProvider>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </ThemeProvider>,
   )
   expect(screen.getByTestId('clock-IST')).toBeInTheDocument()

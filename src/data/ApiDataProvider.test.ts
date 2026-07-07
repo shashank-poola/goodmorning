@@ -45,6 +45,35 @@ it('getCalendar throws with the API error message on failure', async () => {
   await expect(provider.getCalendar()).rejects.toThrow('No Google accounts connected')
 })
 
+it('getEmails fetches from the API and returns parsed JSON', async () => {
+  const payload = {
+    mailboxes: [{ id: 'google-1', name: 'work@gmail.com', color: 'gold' as const }],
+    emails: [
+      {
+        id: 'google-1:abc',
+        mailboxId: 'google-1',
+        sender: 'Ana Duarte',
+        subject: 'Q3 roadmap',
+        preview: 'Before our 1:1…',
+        receivedAt: '2026-07-07T07:12:00.000Z',
+        unread: true,
+      },
+    ],
+  }
+
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => payload,
+    }),
+  )
+
+  const provider = new ApiDataProvider('http://localhost:3001', { latencyMs: 0 })
+  await expect(provider.getEmails()).resolves.toEqual(payload)
+  expect(fetch).toHaveBeenCalledWith('http://localhost:3001/api/emails')
+})
+
 it('delegates getQuote to the mock fallback', async () => {
   vi.stubGlobal(
     'fetch',

@@ -1,22 +1,40 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { AuthProvider } from '../hooks/AuthContext'
 import { ThemeProvider } from '../hooks/ThemeContext'
 import { Sidebar } from './Sidebar'
 
+function mockAuthFetch() {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ connected: false, user: null, accounts: [] }),
+    }),
+  )
+}
+
 function renderSidebar(props: Partial<Parameters<typeof Sidebar>[0]> = {}) {
+  mockAuthFetch()
   return render(
     <ThemeProvider>
-      <Sidebar
-        onOpenFinance={vi.fn()}
-        activeId="top"
-        onNavigate={vi.fn()}
-        collapsed={false}
-        onToggleCollapse={vi.fn()}
-        {...props}
-      />
+      <AuthProvider>
+        <Sidebar
+          onOpenFinance={vi.fn()}
+          activeId="top"
+          onNavigate={vi.fn()}
+          collapsed={false}
+          onToggleCollapse={vi.fn()}
+          {...props}
+        />
+      </AuthProvider>
     </ThemeProvider>,
   )
 }
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 it('scrolls to the target widget on click', async () => {
   const target = document.createElement('section')
@@ -46,6 +64,11 @@ it('calls onToggleCollapse when the collapse button is clicked', async () => {
 
 it('shows Overview icon (not Home) for the overview nav item', () => {
   renderSidebar()
-  // Multiple Overview buttons exist (group item + mobile nav); at least one must be present.
   expect(screen.getAllByRole('button', { name: /overview/i })[0]).toBeInTheDocument()
+})
+
+it('shows sign-in prompt when no Google account is connected', async () => {
+  renderSidebar()
+  expect(await screen.findByText('Sign in')).toBeInTheDocument()
+  expect(screen.getByText('Connect Google account')).toBeInTheDocument()
 })

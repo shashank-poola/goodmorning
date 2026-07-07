@@ -23,15 +23,9 @@ import { scrollToSection } from './commands'
 import { useWidgetData } from '../components/useWidgetData'
 import { provider } from '../data/providerFactory'
 import { useAppTheme } from '../hooks/ThemeContext'
+import { useAppAuth } from '../hooks/AuthContext'
 import logoUrl from '../assets/logo.png'
 import styles from './Sidebar.module.css'
-
-// User profile config — replace with auth once backend lands.
-const USER = {
-  name: 'Shashank Poola',
-  username: 'shashankpoola123',
-  initial: 'S',
-}
 
 type NavItem = {
   id: string
@@ -103,6 +97,11 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
   const [profileOpen, setProfileOpen] = useState(false)
 
   const { theme, toggle } = useAppTheme()
+  const { user, connected, loading: authLoading, connect } = useAppAuth()
+
+  const displayName = user?.name ?? 'Sign in'
+  const displayEmail = user?.email ?? 'Connect Google account'
+  const displayInitial = user?.initial ?? '?'
 
   const { data: renewals } = useWidgetData(provider.getRenewals)
   const notificationCount =
@@ -262,6 +261,20 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
               )}
             </button>
 
+            {!connected && (
+              <button
+                type="button"
+                className={styles.menuRowBtn}
+                onClick={connect}
+                aria-label="Connect Google account"
+              >
+                <span className={styles.menuLeft}>
+                  <Icon icon={Mail01Icon} size={17} />
+                  <span className={styles.menuLabel}>Connect Google</span>
+                </span>
+              </button>
+            )}
+
             <button
               type="button"
               className={styles.menuRowBtn}
@@ -280,33 +293,34 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
         <button
           type="button"
           className={styles.profileBtn}
-          onClick={() => setProfileOpen((v) => !v)}
+          onClick={() => {
+            if (!connected && !authLoading) {
+              connect()
+              return
+            }
+            setProfileOpen((v) => !v)
+          }}
           aria-expanded={profileOpen}
-          title={collapsed ? USER.name : undefined}
+          title={collapsed ? displayName : undefined}
         >
-          {/* Avatar */}
           <span className={styles.avatar} aria-hidden="true">
-            {USER.initial}
+            {displayInitial}
           </span>
 
-          {/* Name + username — hidden when collapsed */}
           {!collapsed && (
-            <span className={styles.profileInfo}>
-              <span className={styles.profileName}>{USER.name}</span>
-              <span className={styles.profileUsername}>{USER.username}</span>
-            </span>
+            <>
+              <span className={styles.profileInfo}>
+                <span className={styles.profileName}>{displayName}</span>
+                <span className={styles.profileEmail}>{displayEmail}</span>
+              </span>
+              <Icon
+                icon={profileOpen ? ArrowUp01Icon : ArrowDown01Icon}
+                size={14}
+                className={styles.profileChevron}
+              />
+            </>
           )}
 
-          {/* Chevron — hidden when collapsed */}
-          {!collapsed && (
-            <Icon
-              icon={profileOpen ? ArrowUp01Icon : ArrowDown01Icon}
-              size={14}
-              className={styles.chevron}
-            />
-          )}
-
-          {/* Notification dot when collapsed */}
           {notificationCount > 0 && collapsed && (
             <span
               className={styles.badgeDot}

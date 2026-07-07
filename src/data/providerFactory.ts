@@ -3,7 +3,7 @@ import { ApiDataProvider } from './ApiDataProvider'
 import { MockDataProvider } from './MockDataProvider'
 
 /**
- * THE swap point. When VITE_USE_API=true, calendar comes from the backend;
+ * THE swap point. When VITE_USE_API=true, calendar + email come from the backend;
  * all other widgets stay on mock until their subsystems ship.
  * Tests always use mock (zero latency, no network).
  */

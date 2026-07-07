@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './styles/tokens.css'
 import './styles/global.css'
 import { ThemeProvider } from './hooks/ThemeContext'
+import { AuthProvider } from './hooks/AuthContext'
 import { App } from './App'
 import logoUrl from './assets/logo.png'
 
@@ -20,7 +21,9 @@ import logoUrl from './assets/logo.png'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </ThemeProvider>
   </StrictMode>,
 )
