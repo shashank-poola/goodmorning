@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Search01Icon } from '@hugeicons/core-free-icons'
 import { Icon } from './Icon'
-import { buildCommands, filterCommands, type AppCommand, type CommandSection } from './commands'
+import { buildCommands, filterCommands, scrollToSection, type AppCommand, type CommandSection } from './commands'
 import type { Theme } from '../hooks/useTheme'
 import styles from './CommandPalette.module.css'
 
@@ -45,7 +45,7 @@ export function CommandPalette({ open, onClose, theme, onToggleTheme, onOpenFina
   const commands = useMemo(
     () =>
       buildCommands({
-        scrollTo: (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+        scrollTo: scrollToSection,
         openFinance: () => {
           onOpenFinance()
           onClose()

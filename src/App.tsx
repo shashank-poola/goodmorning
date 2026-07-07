@@ -56,7 +56,7 @@ export function App() {
         <RenewalAlerts onOpenFinance={openFinance} />
         <TopBar onOpenSearch={openPalette} />
         <TickerBar />
-        <div className={styles.content}>
+        <div className={styles.content} data-dashboard-scroll>
           <PageHeader onOpenFinance={openFinance} />
           <DashboardGrid />
         </div>

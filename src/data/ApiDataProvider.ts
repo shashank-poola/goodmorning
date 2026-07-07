@@ -1,6 +1,6 @@
 import type { DataProvider } from './DataProvider'
 import { MockDataProvider } from './MockDataProvider'
-import type { CalendarEvent, CalendarSource, NewsItem, RepoTrend } from './types'
+import type { CalendarEvent, CalendarSource, LinkedInData, NewsItem, RepoTrend, Todo, Tweet, YesterdayRecap } from './types'
 import type { Email, Mailbox } from './types'
 
 interface CalendarResponse {
@@ -27,7 +27,7 @@ async function fetchJson<T>(url: string): Promise<T> {
 }
 
 /**
- * Hybrid provider: calendar, email, news, and GitHub from the backend API;
+ * Hybrid provider: calendar, email, news, GitHub, todos, tweets, recap, and LinkedIn from the backend API;
  * everything else from mock until each subsystem ships.
  */
 export class ApiDataProvider implements DataProvider {
@@ -59,12 +59,12 @@ export class ApiDataProvider implements DataProvider {
     this.getEmails = () => fetchJson<EmailsResponse>(`${this.apiBase}/api/emails`)
     this.getNews = () => fetchJson<NewsItem[]>(`${this.apiBase}/api/news`)
     this.getRepoTrends = () => fetchJson<RepoTrend[]>(`${this.apiBase}/api/repos`)
+    this.getTodos = () => fetchJson<Todo[]>(`${this.apiBase}/api/todos`)
+    this.getTweets = () => fetchJson<Tweet[]>(`${this.apiBase}/api/tweets`)
+    this.getYesterdayRecap = () => fetchJson<YesterdayRecap>(`${this.apiBase}/api/yesterday-recap`)
+    this.getLinkedIn = () => fetchJson<LinkedInData>(`${this.apiBase}/api/linkedin`)
 
     this.getQuote = this.fallback.getQuote
-    this.getTweets = this.fallback.getTweets
-    this.getLinkedIn = this.fallback.getLinkedIn
-    this.getTodos = this.fallback.getTodos
-    this.getYesterdayRecap = this.fallback.getYesterdayRecap
     this.getUsageStats = this.fallback.getUsageStats
     this.getReminders = this.fallback.getReminders
     this.getStocks = this.fallback.getStocks

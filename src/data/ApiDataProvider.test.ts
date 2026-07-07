@@ -96,6 +96,44 @@ it('getNews fetches from the API', async () => {
   expect(fetch).toHaveBeenCalledWith('/api/news')
 })
 
+it('getTodos fetches from the API', async () => {
+  const payload = [
+    { id: 'td1', text: 'Prep notes', priority: 'high' as const, done: false },
+  ]
+
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({ ok: true, json: async () => payload }),
+  )
+
+  const provider = new ApiDataProvider('http://localhost:3001', { latencyMs: 0 })
+  await expect(provider.getTodos()).resolves.toEqual(payload)
+  expect(fetch).toHaveBeenCalledWith('http://localhost:3001/api/todos')
+})
+
+it('getTweets fetches from the API', async () => {
+  const payload = [
+    {
+      id: 't1',
+      handle: '@paulg',
+      displayName: 'Paul Graham',
+      text: 'Hello',
+      likes: 0,
+      reposts: 0,
+      postedAt: '2026-07-07T06:30:00.000Z',
+    },
+  ]
+
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({ ok: true, json: async () => payload }),
+  )
+
+  const provider = new ApiDataProvider('', { latencyMs: 0 })
+  await expect(provider.getTweets()).resolves.toEqual(payload)
+  expect(fetch).toHaveBeenCalledWith('/api/tweets')
+})
+
 it('delegates getQuote to the mock fallback', async () => {
   vi.stubGlobal(
     'fetch',

@@ -57,6 +57,83 @@ describe('API routes', () => {
     expect(Array.isArray(body)).toBe(true)
   })
 
+  it('GET /api/tweets returns an array', async () => {
+    const app = await makeApp()
+    const res = await app.request('/api/tweets')
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(Array.isArray(body)).toBe(true)
+  })
+
+  it('GET /api/todos returns seeded todos', async () => {
+    const app = await makeApp()
+    const res = await app.request('/api/todos')
+    expect(res.status).toBe(200)
+    const body = (await res.json()) as { text: string }[]
+    expect(body.length).toBeGreaterThan(0)
+  })
+
+  it('POST /api/todos creates a todo', async () => {
+    const app = await makeApp()
+    const res = await app.request('/api/todos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: 'Ship tweets RSS' }),
+    })
+    expect(res.status).toBe(201)
+    const body = (await res.json()) as { text: string; done: boolean }
+    expect(body.text).toBe('Ship tweets RSS')
+    expect(body.done).toBe(false)
+  })
+
+  it('PATCH /api/todos/:id toggles done state', async () => {
+    const app = await makeApp()
+    const listRes = await app.request('/api/todos')
+    const todos = (await listRes.json()) as { id: string }[]
+    const id = todos[0]!.id
+
+    const res = await app.request(`/api/todos/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ done: true }),
+    })
+    expect(res.status).toBe(200)
+    expect((await res.json()) as { done: boolean }).toEqual(expect.objectContaining({ done: true }))
+  })
+
+  it('DELETE /api/todos/:id removes a todo', async () => {
+    const app = await makeApp()
+    const createRes = await app.request('/api/todos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: 'Temporary task' }),
+    })
+    const created = (await createRes.json()) as { id: string }
+
+    const delRes = await app.request(`/api/todos/${created.id}`, { method: 'DELETE' })
+    expect(delRes.status).toBe(204)
+
+    const list = (await (await app.request('/api/todos')).json()) as { id: string }[]
+    expect(list.some((t) => t.id === created.id)).toBe(false)
+  })
+
+  it('GET /api/yesterday-recap returns bullets', async () => {
+    const app = await makeApp()
+    const res = await app.request('/api/yesterday-recap')
+    expect(res.status).toBe(200)
+    const body = (await res.json()) as { bullets: string[] }
+    expect(body.bullets.length).toBeGreaterThan(0)
+  })
+
+  it('GET /api/linkedin returns stats and messages', async () => {
+    const app = await makeApp()
+    const res = await app.request('/api/linkedin')
+    expect(res.status).toBe(200)
+    const body = (await res.json()) as { stats: { followersTotal: number }; messages: unknown[] }
+    expect(body.stats.followersTotal).toBeGreaterThan(0)
+    expect(body.messages.length).toBeGreaterThan(0)
+  })
+
   it('GET /api/calendar returns 401 when no accounts connected', async () => {
     const app = await makeApp()
     const res = await app.request('/api/calendar')

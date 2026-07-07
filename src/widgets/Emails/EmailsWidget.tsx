@@ -40,6 +40,9 @@ export function EmailsWidget() {
                       <span className={styles.time}>{fmt(e.receivedAt)}</span>
                     </span>
                     <span className={styles.subject}>{e.subject}</span>
+                    {e.whyItMatters ? (
+                      <span className={styles.intel}>{e.whyItMatters}</span>
+                    ) : null}
                     <span className={styles.preview}>{e.preview}</span>
                   </span>
                 </li>

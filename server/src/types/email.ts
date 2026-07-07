@@ -16,6 +16,7 @@ export interface Email {
   receivedAt: string
   unread: boolean
   important?: boolean
+  whyItMatters?: string
 }
 
 export interface EmailsResponse {

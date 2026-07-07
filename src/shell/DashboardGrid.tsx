@@ -16,8 +16,8 @@ export function DashboardGrid() {
       <div className={styles.gmail}>
         <GmailWidget />
       </div>
-      <div className={styles.todos}>
-        <TodosWidget />
+      <div className={styles.tweets}>
+        <TweetsWidget />
       </div>
       <div className={styles.linkedin}>
         <LinkedInWidget />
@@ -25,11 +25,11 @@ export function DashboardGrid() {
       <div className={styles.emails}>
         <EmailsWidget />
       </div>
-      <div className={styles.tweets}>
-        <TweetsWidget />
-      </div>
       <div className={styles.news}>
         <NewsWidget />
+      </div>
+      <div className={styles.todos}>
+        <TodosWidget />
       </div>
     </main>
   )

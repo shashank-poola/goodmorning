@@ -3,6 +3,7 @@
   border-bottom: 1px solid var(--border);
   background: var(--bg-panel);
   min-height: 36px;
+  flex-shrink: 0;
 }
 
 .track {

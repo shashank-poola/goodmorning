@@ -402,8 +402,8 @@
   background: var(--bg-active);
 }
 
-/* ── Responsive ── */
-@media (max-width: 1023px) {
+/* ── Responsive: mobile bottom nav only on phone widths ── */
+@media (max-width: 767px) {
   .sidebar {
     position: fixed;
     bottom: 0;

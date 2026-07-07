@@ -36,7 +36,20 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-it('scrolls to the target widget on click', async () => {
+it('scrolls to the target widget on click (mobile)', async () => {
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  )
+
   const target = document.createElement('section')
   target.id = 'calendar'
   target.scrollIntoView = vi.fn()

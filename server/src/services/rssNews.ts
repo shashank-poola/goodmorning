@@ -7,6 +7,7 @@ export interface NewsItem {
   source: string
   publishedAt: string
   url: string
+  insight?: string
 }
 
 const MAX_PER_FEED = 3

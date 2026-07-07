@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { buildCommands } from '../shell/commands'
+import { buildCommands, scrollToSection } from '../shell/commands'
 import type { Theme } from './useTheme'
 
 interface Handlers {
@@ -12,7 +12,7 @@ interface Handlers {
 export function useKeyboardShortcuts({ openCommandPalette, openFinance, toggleTheme, theme }: Handlers) {
   useEffect(() => {
     const commands = buildCommands({
-      scrollTo: (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+      scrollTo: scrollToSection,
       openFinance,
       toggleTheme,
       focusCompose: () => document.getElementById('compose-input')?.focus(),

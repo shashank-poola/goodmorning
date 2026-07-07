@@ -10,6 +10,8 @@ export interface ServerConfig {
     redirectUri: string
   }
   dataDir: string
+  zaiApiKey?: string
+  zaiModel: string
 }
 
 function required(name: string): string {
@@ -32,6 +34,8 @@ export function loadConfig(): ServerConfig {
       redirectUri: required('GOOGLE_REDIRECT_URI'),
     },
     dataDir: process.env.DATA_DIR ?? '.data',
+    zaiApiKey: process.env.ZAI_API_KEY,
+    zaiModel: process.env.ZAI_MODEL ?? 'glm-5.2',
   }
 }
 
@@ -47,6 +51,8 @@ export function loadTestConfig(overrides: Partial<ServerConfig> = {}): ServerCon
       redirectUri: 'http://localhost:3001/auth/google/callback',
     },
     dataDir: '.data-test',
+    zaiApiKey: undefined,
+    zaiModel: 'glm-5.2',
     ...overrides,
   }
 }

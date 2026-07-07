@@ -173,5 +173,12 @@ export function filterCommands(commands: AppCommand[], query: string): AppComman
 }
 
 export function scrollToSection(id: string) {
+  // Desktop bento fits all widgets — scrolling hides sections behind overflow:hidden.
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    if (id === 'top') {
+      document.querySelector<HTMLElement>('[data-dashboard-scroll]')?.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    return
+  }
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }

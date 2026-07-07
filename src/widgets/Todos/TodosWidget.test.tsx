@@ -15,6 +15,12 @@ it('renders todos and toggles done state on click', async () => {
   expect(item).toBeChecked()
 })
 
+it('shows remove button for each todo', async () => {
+  render(<TodosWidget />)
+  await screen.findByRole('checkbox', { name: /prep notes/i })
+  expect(screen.getByRole('button', { name: /remove prep notes/i })).toBeInTheDocument()
+})
+
 it('renders already-done todos as checked', async () => {
   render(<TodosWidget />)
   expect(await screen.findByRole('checkbox', { name: /renew domain/i })).toBeChecked()

@@ -112,6 +112,8 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
 
   useEffect(() => {
     const onScroll = () => {
+      if (window.matchMedia('(min-width: 768px)').matches) return
+
       const sections = ['top', 'calendar', 'gmail', 'linkedin', 'tweets', 'emails', 'news', 'todos']
       const y = window.scrollY + 120
       let current = 'top'

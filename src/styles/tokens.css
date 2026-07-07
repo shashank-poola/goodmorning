@@ -15,11 +15,11 @@
   --accent-primary-hover: #e0e0e5;
   --accent-tint:          rgba(255, 255, 255, 0.06);
 
-  /* Widget panel accents */
-  --accent-gold: #f59e0b;
-  --accent-sage: #4ade80;
-  --accent-blue: #60a5fa;
-  --accent-clay: #f87171;
+  /* Widget panel accents — vibrant like reference dashboard */
+  --accent-gold: #fbbf24;
+  --accent-sage: #34d399;
+  --accent-blue: #38bdf8;
+  --accent-clay: #fb7185;
 
   /* Notification badge */
   --accent-badge: #f59e0b;
@@ -29,7 +29,9 @@
 
   --radius:    14px;
   --radius-lg: 16px;
-  --gap:       16px;
+  --gap:       20px;
+  --panel-pad-x: 22px;
+  --panel-pad-y: 18px;
   --sidebar-width:           248px;
   --sidebar-collapsed-width: 60px;
   --header-height: 56px;

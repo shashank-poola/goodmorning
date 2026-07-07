@@ -39,6 +39,8 @@ export interface Email {
   unread: boolean
   /** Gmail IMPORTANT label — used by the Important Emails widget. */
   important?: boolean
+  /** LLM-generated one-liner — why this needs attention. */
+  whyItMatters?: string
 }
 
 export interface NewsItem {
@@ -48,6 +50,8 @@ export interface NewsItem {
   source: string
   publishedAt: string // ISO datetime
   url: string
+  /** LLM one-liner — why this headline matters. */
+  insight?: string
 }
 
 export interface RepoTrend {

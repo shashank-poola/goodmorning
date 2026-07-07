@@ -2,7 +2,7 @@
   background: var(--card-bg), var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 20px 22px;
+  padding: var(--panel-pad-y) var(--panel-pad-x);
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -20,35 +20,36 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  padding-bottom: 14px;
-  margin-bottom: 4px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding-bottom: 12px;
+  margin-bottom: 2px;
   flex-shrink: 0;
 }
 
 .title::before {
   content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   background: var(--accent-gold);
   flex-shrink: 0;
-  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-gold) 40%, transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent-gold) 55%, transparent);
 }
 
-.panel[data-accent='sage'] .title::before { background: var(--accent-sage); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-sage) 40%, transparent); }
-.panel[data-accent='blue'] .title::before { background: var(--accent-blue); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-blue) 40%, transparent); }
-.panel[data-accent='clay'] .title::before { background: var(--accent-clay); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-clay) 40%, transparent); }
-.panel[data-accent='gold'] .title::before { background: var(--accent-gold); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-gold) 40%, transparent); }
+.panel[data-accent='sage'] .title::before { background: var(--accent-sage); box-shadow: 0 0 8px color-mix(in srgb, var(--accent-sage) 55%, transparent); }
+.panel[data-accent='blue'] .title::before { background: var(--accent-blue); box-shadow: 0 0 8px color-mix(in srgb, var(--accent-blue) 55%, transparent); }
+.panel[data-accent='clay'] .title::before { background: var(--accent-clay); box-shadow: 0 0 8px color-mix(in srgb, var(--accent-clay) 55%, transparent); }
+.panel[data-accent='gold'] .title::before { background: var(--accent-gold); box-shadow: 0 0 8px color-mix(in srgb, var(--accent-gold) 55%, transparent); }
 
 .body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding-right: 2px;
+  padding-right: 4px;
 }
 
 .skeleton span {

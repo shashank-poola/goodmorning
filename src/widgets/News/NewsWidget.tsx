@@ -51,6 +51,7 @@ export function NewsWidget() {
                 .map((n) => (
                   <li key={n.id} className={styles.item}>
                     <span className={styles.headline}>{n.headline}</span>
+                    {n.insight ? <span className={styles.insight}>{n.insight}</span> : null}
                     <span className={styles.meta}>
                       {n.source} ·{' '}
                       {new Date(n.publishedAt).toLocaleTimeString('en-GB', {
