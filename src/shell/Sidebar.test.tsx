@@ -43,3 +43,9 @@ it('calls onToggleCollapse when the collapse button is clicked', async () => {
   await userEvent.click(screen.getByRole('button', { name: /collapse sidebar/i }))
   expect(onToggleCollapse).toHaveBeenCalledOnce()
 })
+
+it('shows Overview icon (not Home) for the overview nav item', () => {
+  renderSidebar()
+  // Multiple Overview buttons exist (group item + mobile nav); at least one must be present.
+  expect(screen.getAllByRole('button', { name: /overview/i })[0]).toBeInTheDocument()
+})

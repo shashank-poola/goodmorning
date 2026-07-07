@@ -12,11 +12,8 @@ import {
   Message01Icon,
   ArrowDown01Icon,
   ArrowUp01Icon,
-  KeyboardIcon,
-  Sun03Icon,
   Notification01Icon,
   BookOpen01Icon,
-  UserCircleIcon,
   PanelLeftCloseIcon,
   PanelLeftOpenIcon,
 } from '@hugeicons/core-free-icons'
@@ -26,7 +23,15 @@ import { scrollToSection } from './commands'
 import { useWidgetData } from '../components/useWidgetData'
 import { provider } from '../data/providerFactory'
 import { useAppTheme } from '../hooks/ThemeContext'
+import logoUrl from '../assets/logo.png'
 import styles from './Sidebar.module.css'
+
+// User profile config — replace with auth once backend lands.
+const USER = {
+  name: 'Shashank Poola',
+  username: 'shashankpoola123',
+  initial: 'S',
+}
 
 type NavItem = {
   id: string
@@ -48,7 +53,7 @@ const GROUPS: NavGroup[] = [
     label: 'Dashboard',
     icon: DashboardSquare01Icon,
     items: [
-      { id: 'top', label: 'Overview', icon: Home01Icon },
+      { id: 'top', label: 'Overview', icon: DashboardSquare01Icon },
       { id: 'gmail', label: 'Messages', icon: Mail01Icon },
       { id: 'calendar', label: 'Calendar', icon: Calendar03Icon },
       { id: 'news', label: 'News', icon: News01Icon },
@@ -74,7 +79,7 @@ const GROUPS: NavGroup[] = [
 ]
 
 const MOBILE_ITEMS: NavItem[] = [
-  { id: 'top', label: 'Home', icon: Home01Icon },
+  { id: 'top', label: 'Overview', icon: DashboardSquare01Icon },
   { id: 'gmail', label: 'Mail', icon: Mail01Icon },
   { id: 'calendar', label: 'Calendar', icon: Calendar03Icon },
   { id: 'news', label: 'News', icon: News01Icon },
@@ -141,40 +146,40 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
     >
       {/* ── Header ── */}
       <div className={styles.header}>
-        <div className={styles.brand}>
-          <span className={styles.logo} aria-hidden="true">
-            <Icon icon={Sun03Icon} size={18} />
-          </span>
-          {!collapsed && (
-            <div className={styles.brandText}>
-              <span className={styles.brandName}>Good Morning</span>
-              <span className={styles.brandSub}>Personal dashboard</span>
+        {collapsed ? (
+          /* Collapsed: logo visible; hover → show expand toggle */
+          <div className={styles.logoWrap} onClick={onToggleCollapse} role="button" tabIndex={0}
+            aria-label="Expand sidebar"
+            onKeyDown={(e) => e.key === 'Enter' && onToggleCollapse()}>
+            <img src={logoUrl} alt="Good Morning" className={styles.logoImg} />
+            <span className={styles.collapsedToggle} aria-hidden="true">
+              <Icon icon={PanelLeftOpenIcon} size={18} />
+            </span>
+          </div>
+        ) : (
+          /* Expanded: logo + name + collapse button */
+          <>
+            <div className={styles.brand}>
+              <img src={logoUrl} alt="Good Morning logo" className={styles.logoImg} />
+              <div className={styles.brandText}>
+                <span className={styles.brandName}>Good Morning</span>
+                <span className={styles.brandSub}>Personal dashboard</span>
+              </div>
             </div>
-          )}
-        </div>
-        <button
-          type="button"
-          className={styles.collapseBtn}
-          onClick={onToggleCollapse}
-          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          <Icon icon={collapsed ? PanelLeftOpenIcon : PanelLeftCloseIcon} size={18} />
-        </button>
+            <button
+              type="button"
+              className={styles.collapseBtn}
+              onClick={onToggleCollapse}
+              aria-label="Collapse sidebar"
+              title="Collapse sidebar"
+            >
+              <Icon icon={PanelLeftCloseIcon} size={18} />
+            </button>
+          </>
+        )}
       </div>
 
-      {/* ── Home ── */}
-      <button
-        type="button"
-        className={activeId === 'top' ? styles.homeActive : styles.home}
-        onClick={() => go({ id: 'top', label: 'Home', icon: Home01Icon })}
-        title={collapsed ? 'Home' : undefined}
-      >
-        <Icon icon={Home01Icon} size={18} />
-        {!collapsed && <span>Home</span>}
-      </button>
-
-      {/* ── Nav groups ── */}
+      {/* ── Nav groups (expanded) ── */}
       {!collapsed &&
         GROUPS.map((group) => {
           const open = groupExpanded[group.id]
@@ -215,13 +220,13 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
           )
         })}
 
-      {/* Collapsed: icon-only items */}
+      {/* ── Collapsed: icon-only items ── */}
       {collapsed &&
         GROUPS.flatMap((g) => g.items).map((item) => (
           <button
             key={item.id + item.label}
             type="button"
-            className={activeId === item.id ? styles.homeActive : styles.home}
+            className={activeId === item.id ? styles.iconBtnActive : styles.iconBtn}
             onClick={() => go(item)}
             title={item.label}
           >
@@ -232,25 +237,16 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
       {/* ── Spacer ── */}
       <div className={styles.spacer} />
 
-      {/* ── Keyboard hint (expanded only) ── */}
-      {!collapsed && (
-        <span className={styles.footerHint}>
-          <Icon icon={KeyboardIcon} size={14} />
-          <span>Ctrl + K</span>
-        </span>
-      )}
-
-      {/* ── Profile section at bottom ── */}
+      {/* ── Profile section ── */}
       <div className={styles.profileWrap}>
+        {/* Expanded profile menu */}
         {profileOpen && !collapsed && (
           <div className={styles.profileMenu}>
-            {/* Appearance row */}
             <div className={styles.menuRow}>
               <span className={styles.menuLabel}>Appearance</span>
               <ThemeToggle theme={theme} onToggle={toggle} />
             </div>
 
-            {/* Notifications row */}
             <button
               type="button"
               className={styles.menuRowBtn}
@@ -266,7 +262,6 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
               )}
             </button>
 
-            {/* Documentation row */}
             <button
               type="button"
               className={styles.menuRowBtn}
@@ -281,28 +276,42 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
           </div>
         )}
 
+        {/* Profile button — full card when expanded, avatar-only when collapsed */}
         <button
           type="button"
           className={styles.profileBtn}
           onClick={() => setProfileOpen((v) => !v)}
           aria-expanded={profileOpen}
-          title="Your profile"
+          title={collapsed ? USER.name : undefined}
         >
-          <span className={styles.avatar}>
-            <Icon icon={UserCircleIcon} size={22} />
+          {/* Avatar */}
+          <span className={styles.avatar} aria-hidden="true">
+            {USER.initial}
           </span>
+
+          {/* Name + username — hidden when collapsed */}
           {!collapsed && (
-            <>
-              <span className={styles.profileName}>You</span>
-              <Icon
-                icon={profileOpen ? ArrowUp01Icon : ArrowDown01Icon}
-                size={14}
-                className={styles.chevron}
-              />
-            </>
+            <span className={styles.profileInfo}>
+              <span className={styles.profileName}>{USER.name}</span>
+              <span className={styles.profileUsername}>{USER.username}</span>
+            </span>
           )}
+
+          {/* Chevron — hidden when collapsed */}
+          {!collapsed && (
+            <Icon
+              icon={profileOpen ? ArrowUp01Icon : ArrowDown01Icon}
+              size={14}
+              className={styles.chevron}
+            />
+          )}
+
+          {/* Notification dot when collapsed */}
           {notificationCount > 0 && collapsed && (
-            <span className={styles.badgeDot} aria-label={`${notificationCount} notifications`} />
+            <span
+              className={styles.badgeDot}
+              aria-label={`${notificationCount} notifications`}
+            />
           )}
         </button>
       </div>

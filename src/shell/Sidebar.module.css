@@ -11,12 +11,13 @@
   position: sticky;
   top: 0;
   align-self: flex-start;
-  transition: width 0.2s ease;
+  transition: width 0.22s ease;
   overflow: hidden;
 }
 
 .sidebar[data-collapsed='true'] {
   width: var(--sidebar-collapsed-width);
+  padding: 12px 8px;
 }
 
 /* ── Header ── */
@@ -25,11 +26,57 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 4px 4px 12px;
-  margin-bottom: 4px;
+  padding: 2px 2px 12px;
+  margin-bottom: 6px;
   border-bottom: 1px solid var(--border);
 }
 
+/* Collapsed header: single centred area that shows logo → toggle on hover */
+.logoWrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 9px;
+  transition: background 0.15s ease;
+}
+
+.logoWrap:hover {
+  background: var(--bg-active);
+}
+
+.logoWrap .logoImg {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 6px;
+  transition: opacity 0.15s ease;
+}
+
+.collapsedToggle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.logoWrap:hover .logoImg {
+  opacity: 0;
+}
+
+.logoWrap:hover .collapsedToggle {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+/* ── Expanded brand row ── */
 .brand {
   display: flex;
   align-items: center;
@@ -37,15 +84,11 @@
   min-width: 0;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: var(--bg-active);
-  color: var(--accent-gold);
+.logoImg {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  border-radius: 7px;
   flex-shrink: 0;
 }
 
@@ -87,34 +130,7 @@
   color: var(--text-primary);
 }
 
-/* ── Home button ── */
-.home,
-.homeActive {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 9px 10px;
-  border-radius: 9px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: background 0.15s ease, color 0.15s ease;
-  white-space: nowrap;
-}
-
-.home:hover {
-  background: var(--bg-active);
-  color: var(--text-primary);
-}
-
-.homeActive {
-  background: var(--bg-active);
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-/* ── Groups ── */
+/* ── Groups (expanded) ── */
 .group {
   margin-top: 2px;
 }
@@ -182,23 +198,32 @@
   font-weight: 600;
 }
 
+/* ── Collapsed icon-only buttons ── */
+.iconBtn,
+.iconBtnActive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 9px 0;
+  border-radius: 9px;
+  color: var(--text-secondary);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.iconBtn:hover {
+  background: var(--bg-active);
+  color: var(--text-primary);
+}
+
+.iconBtnActive {
+  background: var(--bg-active);
+  color: var(--text-primary);
+}
+
 /* ── Spacer ── */
 .spacer {
   flex: 1;
-}
-
-/* ── Keyboard hint ── */
-.footerHint {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 5px 9px;
-  background: var(--bg-base);
-  margin-bottom: 10px;
 }
 
 /* ── Profile ── */
@@ -255,6 +280,66 @@
   white-space: nowrap;
 }
 
+/* Profile button — full card */
+.profileBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.profileBtn:hover {
+  background: var(--bg-active);
+  color: var(--text-primary);
+}
+
+/* Letter avatar */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Name + username column */
+.profileInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.profileName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileUsername {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -272,49 +357,13 @@
 
 .badgeDot {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 4px;
+  right: 4px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--accent-badge);
   border: 2px solid var(--bg-sidebar);
-}
-
-.profileBtn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 9px;
-  color: var(--text-secondary);
-  font-size: 13px;
-  font-weight: 500;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.profileBtn:hover {
-  background: var(--bg-active);
-  color: var(--text-primary);
-}
-
-.avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--bg-raised);
-  color: var(--text-secondary);
-  flex-shrink: 0;
-}
-
-.profileName {
-  flex: 1;
-  white-space: nowrap;
 }
 
 /* ── Mobile nav ── */
@@ -362,11 +411,10 @@
   }
 
   .header,
-  .home,
-  .homeActive,
   .group,
+  .iconBtn,
+  .iconBtnActive,
   .spacer,
-  .footerHint,
   .profileWrap {
     display: none;
   }
