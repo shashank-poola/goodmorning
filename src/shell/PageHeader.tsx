@@ -63,7 +63,6 @@ export function PageHeader({ onOpenFinance }: Props) {
   return (
     <div className={styles.header} id="top">
       <div className={styles.left}>
-        <h1 className={styles.title}>Today</h1>
         <p className={styles.quote} data-testid="daily-quote">
           <span className={styles.quoteText}>&ldquo;{quote.text}&rdquo;</span>
           <span className={styles.author}> — {quote.author}</span>

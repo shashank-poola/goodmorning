@@ -76,9 +76,9 @@ export function createApp(config: ServerConfig) {
   app.get('/api/news', async (c) => {
     try {
       const items = await newsService.getNews(NEWS_FEEDS)
-      const top = items.slice(0, 5)
+      // Generate insights for all items (spec §4.4: cheap GLM for extraction)
       await Promise.all(
-        top.map(async (item) => {
+        items.map(async (item) => {
           item.insight = await intelligence.newsInsight({
             headline: item.headline,
             source: item.source,
@@ -103,6 +103,12 @@ export function createApp(config: ServerConfig) {
   app.get('/api/tweets', async (c) => {
     try {
       const tweets = await tweetService.getTweets()
+      // Add per-tweet insights for top 5 (spec §4.5 model-tiering: cheap GLM for extraction)
+      await Promise.all(
+        tweets.slice(0, 5).map(async (tweet) => {
+          tweet.insight = await intelligence.tweetInsight(tweet)
+        }),
+      )
       return c.json(tweets)
     } catch (error) {
       return errorResponse(c, error)
@@ -148,7 +154,21 @@ export function createApp(config: ServerConfig) {
   app.post('/api/todos', async (c) => {
     try {
       const body = (await c.req.json()) as CreateTodoBody
-      const todo = await todoService.create(body)
+      const text = body.text?.trim() ?? ''
+
+      // Duplicate detection (spec §4.3)
+      const existing = await todoService.list()
+      const duplicate = await intelligence.findDuplicate(text, existing.map((t) => t.text))
+      if (duplicate) {
+        return c.json(
+          { error: 'duplicate', message: `Already have a similar task: "${duplicate}"` },
+          409,
+        )
+      }
+
+      // Auto-categorisation (spec §4.3)
+      const priority = body.priority ?? (await intelligence.categorizeTodo(text))
+      const todo = await todoService.create({ ...body, priority })
       return c.json(todo, 201)
     } catch (error) {
       return errorResponse(c, error)

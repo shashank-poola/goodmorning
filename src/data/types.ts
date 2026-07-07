@@ -71,6 +71,8 @@ export interface Tweet {
   likes: number
   reposts: number
   postedAt: string // ISO datetime
+  /** LLM one-liner — why this tweet matters to a tech founder. */
+  insight?: string
 }
 
 export interface LinkedInData {

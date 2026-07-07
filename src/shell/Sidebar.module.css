@@ -7,7 +7,7 @@
   padding: 12px 10px;
   border-right: 1px solid var(--border);
   background: var(--bg-sidebar);
-  min-height: 100vh;
+  height: 100vh;
   position: sticky;
   top: 0;
   align-self: flex-start;
@@ -185,6 +185,7 @@
   color: var(--text-secondary);
   transition: background 0.15s ease, color 0.15s ease;
   white-space: nowrap;
+  position: relative;
 }
 
 .item:hover {
@@ -196,6 +197,20 @@
   background: var(--bg-active);
   color: var(--text-primary);
   font-weight: 600;
+}
+
+/* Glowing accent dot on the active nav item */
+.itemActive::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--accent-gold) 70%, transparent);
 }
 
 /* ── Collapsed icon-only buttons ── */
@@ -219,6 +234,20 @@
 .iconBtnActive {
   background: var(--bg-active);
   color: var(--text-primary);
+  position: relative;
+}
+
+/* Glowing dot on active collapsed icon button */
+.iconBtnActive::after {
+  content: '';
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--accent-gold) 70%, transparent);
 }
 
 /* ── Spacer ── */

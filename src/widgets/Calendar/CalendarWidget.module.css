@@ -15,7 +15,13 @@
 }
 
 .past {
-  opacity: 0.45;
+  opacity: 0.4;
+}
+
+/* Dull the glow on past events */
+.past .dot {
+  box-shadow: none !important;
+  opacity: 0.5;
 }
 
 .time {
@@ -33,10 +39,10 @@
   flex-shrink: 0;
   align-self: center;
 }
-.dot[data-color='gold'] { background: var(--accent-gold); }
-.dot[data-color='sage'] { background: var(--accent-sage); }
-.dot[data-color='blue'] { background: var(--accent-blue); }
-.dot[data-color='clay'] { background: var(--accent-clay); }
+.dot[data-color='gold'] { background: var(--accent-gold); box-shadow: 0 0 7px color-mix(in srgb, var(--accent-gold) 65%, transparent); }
+.dot[data-color='sage'] { background: var(--accent-sage); box-shadow: 0 0 7px color-mix(in srgb, var(--accent-sage) 65%, transparent); }
+.dot[data-color='blue'] { background: var(--accent-blue); box-shadow: 0 0 7px color-mix(in srgb, var(--accent-blue) 65%, transparent); }
+.dot[data-color='clay'] { background: var(--accent-clay); box-shadow: 0 0 7px color-mix(in srgb, var(--accent-clay) 65%, transparent); }
 
 .details {
   display: flex;

@@ -10,27 +10,13 @@ import styles from './DashboardGrid.module.css'
 export function DashboardGrid() {
   return (
     <main className={styles.grid}>
-      <div className={styles.calendar}>
-        <CalendarWidget />
-      </div>
-      <div className={styles.gmail}>
-        <GmailWidget />
-      </div>
-      <div className={styles.tweets}>
-        <TweetsWidget />
-      </div>
-      <div className={styles.linkedin}>
-        <LinkedInWidget />
-      </div>
-      <div className={styles.emails}>
-        <EmailsWidget />
-      </div>
-      <div className={styles.news}>
-        <NewsWidget />
-      </div>
-      <div className={styles.todos}>
-        <TodosWidget />
-      </div>
+      <div className={styles.calendar}><CalendarWidget /></div>
+      <div className={styles.gmail}><GmailWidget /></div>
+      <div className={styles.tweets}><TweetsWidget /></div>
+      <div className={styles.linkedin}><LinkedInWidget /></div>
+      <div className={styles.emails}><EmailsWidget /></div>
+      <div className={styles.news}><NewsWidget /></div>
+      <div className={styles.todos}><TodosWidget /></div>
     </main>
   )
 }

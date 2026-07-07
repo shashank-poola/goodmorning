@@ -1,7 +1,98 @@
+import { useState } from 'react'
 import { Panel, WidgetBody } from '../../components/Panel'
 import { useWidgetData } from '../../components/useWidgetData'
 import { provider } from '../../data/providerFactory'
 import styles from './LinkedInWidget.module.css'
+
+const apiBase = import.meta.env.VITE_API_BASE_URL ?? ''
+
+async function generateReplies(text: string): Promise<string[]> {
+  const res = await fetch(`${apiBase}/api/linkedin/paste`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  })
+  if (!res.ok) throw new Error('Failed to generate replies')
+  const body = (await res.json()) as { drafts: string[] }
+  return body.drafts
+}
+
+function PasteSection() {
+  const [open, setOpen] = useState(false)
+  const [pasted, setPasted] = useState('')
+  const [drafts, setDrafts] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+  const [copied, setCopied] = useState<number | null>(null)
+
+  const handleGenerate = async () => {
+    if (!pasted.trim()) return
+    setLoading(true)
+    try {
+      const replies = await generateReplies(pasted)
+      setDrafts(replies)
+    } catch {
+      setDrafts(['Could not generate — check your API key.'])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const copyDraft = (text: string, idx: number) => {
+    void navigator.clipboard.writeText(text)
+    setCopied(idx)
+    setTimeout(() => setCopied(null), 1800)
+  }
+
+  return (
+    <div className={styles.paste}>
+      <button
+        type="button"
+        className={styles.pasteToggle}
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+      >
+        {open ? '▾' : '▸'} Generate reply drafts
+      </button>
+
+      {open && (
+        <div className={styles.pasteBody}>
+          <textarea
+            className={styles.pasteInput}
+            value={pasted}
+            onChange={(e) => setPasted(e.target.value)}
+            placeholder="Paste your LinkedIn post + comments here…"
+            rows={4}
+          />
+          <button
+            type="button"
+            className={styles.pasteBtn}
+            onClick={() => void handleGenerate()}
+            disabled={!pasted.trim() || loading}
+          >
+            {loading ? 'Generating…' : 'Generate drafts'}
+          </button>
+
+          {drafts.length > 0 && (
+            <ul className={styles.drafts}>
+              {drafts.map((draft, i) => (
+                <li key={i} className={styles.draft}>
+                  <span className={styles.draftText}>{draft}</span>
+                  <button
+                    type="button"
+                    className={styles.copyBtn}
+                    onClick={() => copyDraft(draft, i)}
+                  >
+                    {copied === i ? '✓ Copied' : '✦ Copy'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function LinkedInWidget() {
   const state = useWidgetData(provider.getLinkedIn)
@@ -40,6 +131,7 @@ export function LinkedInWidget() {
                   </li>
                 ))}
               </ul>
+              <PasteSection />
             </div>
           </div>
         )}

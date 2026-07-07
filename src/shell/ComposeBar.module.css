@@ -3,9 +3,10 @@
   align-items: center;
   gap: 12px;
   padding: 12px 22px;
+  margin-top: 16px;
   border-top: 1px solid var(--border);
   background: var(--bg-panel);
-  flex-shrink: 0;
+  border-radius: var(--radius-lg);
 }
 
 .input {

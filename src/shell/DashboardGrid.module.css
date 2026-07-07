@@ -1,61 +1,67 @@
+/*
+ * Bento grid — fixed card heights matched to each section's content.
+ *
+ *  Top row (360px tall):
+ *  ┌─────────────┬──────────────────────────────┬─────────────┐
+ *  │  MEETINGS   │           GMAIL              │   TWEETS    │
+ *  │   3 cols    │          6 cols              │   3 cols    │
+ *  └─────────────┴──────────────────────────────┴─────────────┘
+ *
+ *  Bottom row (268px tall):
+ *  ┌─────────────┬──────────────┬───────────────┬─────────────┐
+ *  │  LINKEDIN   │ IMPORTANT    │  NEWS & GH    │   TO-DO     │
+ *  │   3 cols    │ EMAILS 3cols │   3 cols      │   3 cols    │
+ *  └─────────────┴──────────────┴───────────────┴─────────────┘
+ *
+ *  The parent .content div scrolls — cards have fixed heights
+ *  and never compress. Internal content scrolls inside each card.
+ */
+
 .grid {
-  flex: 1 1 auto;
-  min-height: 0;
-  height: 100%;
   display: grid;
-  gap: var(--gap);
-  padding-bottom: var(--gap);
+  gap: 16px;
+  padding-bottom: 8px;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  /*
-   * Reference bento — all 7 sections visible in viewport (desktop):
-   * Row 1: Calendar (3) | Gmail hero (6) | Tweets (3)
-   * Row 2: Calendar      | Gmail fills cols 4–12
-   * Row 3: LinkedIn (3) | Important Emails (3) | News (3) | To-Do (3)
-   */
-  grid-template-rows: minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 0.82fr);
-  overflow: hidden;
+  /* Fixed heights: top row for calendar/gmail/tweets content,
+     bottom row for compact widgets */
+  grid-template-rows: 360px 268px;
   grid-template-areas:
     'calendar calendar calendar gmail gmail gmail gmail gmail gmail tweets tweets tweets'
-    'calendar calendar calendar gmail gmail gmail gmail gmail gmail gmail gmail gmail'
     'linkedin linkedin linkedin emails emails emails news news news todos todos todos';
 }
 
-.grid > div {
+/* Named grid areas */
+.calendar { grid-area: calendar; }
+.gmail    { grid-area: gmail; }
+.tweets   { grid-area: tweets; }
+.linkedin { grid-area: linkedin; }
+.emails   { grid-area: emails; }
+.news     { grid-area: news; }
+.todos    { grid-area: todos; }
+
+/* Every wrapper div must fill its grid cell so Panel height: 100% works */
+.calendar,
+.gmail,
+.tweets,
+.linkedin,
+.emails,
+.news,
+.todos {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
 }
 
-.grid > div > section {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.calendar { grid-area: calendar; }
-.gmail { grid-area: gmail; }
-.tweets { grid-area: tweets; }
-.linkedin { grid-area: linkedin; }
-.emails { grid-area: emails; }
-.news { grid-area: news; }
-.todos { grid-area: todos; }
-
-/* Tablet: same bento, slightly tighter rows */
+/* ── Tablet (768–1199px) ── */
 @media (max-width: 1199px) and (min-width: 768px) {
   .grid {
-    grid-template-rows: minmax(0, 1.05fr) minmax(0, 1.05fr) minmax(0, 0.8fr);
-    gap: 14px;
+    gap: 12px;
+    grid-template-rows: 320px 250px;
   }
 }
 
+/* ── Mobile (<768px) ── */
 @media (max-width: 767px) {
   .grid {
-    flex: none;
-    height: auto;
-    min-height: auto;
-    overflow: visible;
     grid-template-columns: 1fr;
     grid-template-rows: none;
     grid-template-areas:
@@ -66,11 +72,15 @@
       'emails'
       'news'
       'todos';
-    padding-bottom: calc(80px + var(--gap));
+    gap: 12px;
   }
 
-  .grid > div {
-    min-height: 280px;
-    max-height: 320px;
-  }
+  /* On mobile each card is tall enough to show its content */
+  .calendar { min-height: 300px; }
+  .gmail    { min-height: 320px; }
+  .tweets   { min-height: 300px; }
+  .linkedin { min-height: 240px; }
+  .emails   { min-height: 240px; }
+  .news     { min-height: 280px; }
+  .todos    { min-height: 240px; }
 }

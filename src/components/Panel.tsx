@@ -24,10 +24,12 @@ interface WidgetBodyProps<T> {
   error: boolean
   retry: () => void
   isEmpty?: (data: T) => boolean
+  /** Custom node shown when isEmpty is true — overrides the default "Nothing here" text. */
+  emptyNode?: ReactNode
   children: (data: T) => ReactNode
 }
 
-export function WidgetBody<T>({ data, loading, error, retry, isEmpty, children }: WidgetBodyProps<T>) {
+export function WidgetBody<T>({ data, loading, error, retry, isEmpty, emptyNode, children }: WidgetBodyProps<T>) {
   if (loading) {
     return (
       <div className={styles.skeleton} data-testid="skeleton" aria-hidden="true">
@@ -48,7 +50,7 @@ export function WidgetBody<T>({ data, loading, error, retry, isEmpty, children }
     )
   }
   if (isEmpty?.(data)) {
-    return <p className={styles.state}>Nothing here — enjoy the quiet.</p>
+    return emptyNode ? <>{emptyNode}</> : <p className={styles.state}>Nothing here — enjoy the quiet.</p>
   }
   return <>{children(data)}</>
 }

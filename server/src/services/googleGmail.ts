@@ -4,10 +4,14 @@ import type { StoredAccount } from '../types/calendar'
 import type { Email, EmailsResponse, Mailbox } from '../types/email'
 import type { GoogleAccountsService } from './googleAccounts'
 
-/** Primary + important only — skips promotions, social, updates noise. */
+/**
+ * Primary inbox only — explicitly excludes Gmail's automated categories so
+ * only real human-sent mail shows (no OTPs, notifications, marketing).
+ * is:important also catches starred/flagged threads.
+ */
 const INBOX_QUERY =
-  'in:inbox (category:primary OR is:important) -category:promotions -category:social -category:updates'
-const MAX_MESSAGES_PER_ACCOUNT = 12
+  'in:inbox category:primary -category:promotions -category:social -category:updates -category:forums'
+const MAX_MESSAGES_PER_ACCOUNT = 10
 
 export class GoogleGmailService {
   constructor(private readonly accounts: GoogleAccountsService) {}

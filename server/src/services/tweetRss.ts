@@ -8,46 +8,69 @@ export interface Tweet {
   likes: number
   reposts: number
   postedAt: string
+  /** LLM one-liner — what this tweet is about / why it matters. */
+  insight?: string
 }
 
-/** Free RSS mirrors for X — try in order until one responds (spec §4.5). */
-const RSS_BASES = [
-  'https://nitter.poast.org',
-  'https://nitter.privacydev.net',
+interface RssSource {
+  buildUrl: (username: string) => string
+}
+
+/**
+ * Multiple RSS/Atom sources for X posts — tried in parallel, first success wins.
+ * Nitter mirrors go offline frequently; RSSHub public instances are more reliable.
+ * Spec §4.5: file-driven follow list → best available free-then-paid source.
+ */
+const RSS_SOURCES: RssSource[] = [
+  // RSSHub public instances (aggregator, more stable than individual Nitter mirrors)
+  { buildUrl: (u) => `https://rsshub.app/twitter/user/${u}` },
+  { buildUrl: (u) => `https://rsshub.rss.plus/twitter/user/${u}` },
+  { buildUrl: (u) => `https://rsshub.fly.dev/twitter/user/${u}` },
+  // Nitter mirrors (original RSS path format)
+  { buildUrl: (u) => `https://nitter.poast.org/${u}/rss` },
+  { buildUrl: (u) => `https://nitter.privacydev.net/${u}/rss` },
+  { buildUrl: (u) => `https://nitter.1d4.us/${u}/rss` },
+  { buildUrl: (u) => `https://nitter.kavin.rocks/${u}/rss` },
+  { buildUrl: (u) => `https://xcancel.com/${u}/rss` },
+  { buildUrl: (u) => `https://twiiit.com/${u}/rss` },
 ]
 
-const FETCH_OPTS = {
-  headers: { 'User-Agent': 'GoodMorning/1.0 (RSS reader)' },
-  signal: AbortSignal.timeout(8_000),
-}
+const HEADERS = { 'User-Agent': 'GoodMorning/1.0 (RSS reader; spec §4.5)' }
+/** Per-source timeout — fail fast and let Promise.any() win with the first working source. */
+const PER_SOURCE_TIMEOUT_MS = 5_000
 
-/** Latest post per followed handle via RSS — no API key required. */
+/** Fetches the latest post per followed handle — all sources tried in parallel. */
 export class TweetRssService {
   async getTweets(handles: string[] = TWEET_FOLLOWS): Promise<Tweet[]> {
-    const results = await Promise.all(handles.map((handle) => this.fetchLatest(handle)))
+    const results = await Promise.all(handles.map((h) => this.fetchLatest(h)))
     return results.filter((t): t is Tweet => t !== null)
   }
 
   private async fetchLatest(handle: string): Promise<Tweet | null> {
     const username = handle.replace(/^@/, '')
 
-    for (const base of RSS_BASES) {
-      try {
-        const res = await fetch(`${base}/${username}/rss`, FETCH_OPTS)
-        if (!res.ok) continue
-        const xml = await res.text()
-        const tweet = parseTweetRss(xml, handle)
-        if (tweet) return tweet
-      } catch {
-        /* try next mirror */
-      }
-    }
+    const attempts = RSS_SOURCES.map(async (source): Promise<Tweet> => {
+      const url = source.buildUrl(username)
+      const res = await fetch(url, {
+        headers: HEADERS,
+        signal: AbortSignal.timeout(PER_SOURCE_TIMEOUT_MS),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const xml = await res.text()
+      const tweet = parseTweetRss(xml, handle)
+      if (!tweet) throw new Error('empty feed')
+      return tweet
+    })
 
-    return null
+    try {
+      return await Promise.any(attempts)
+    } catch {
+      return null
+    }
   }
 }
 
-/** Parse the newest item from a Nitter-style RSS feed. Exported for tests. */
+/** Parse the newest item from a Nitter / RSSHub Twitter RSS feed. Exported for tests. */
 export function parseTweetRss(xml: string, handle: string): Tweet | null {
   const block = xml.match(/<item[\s\S]*?<\/item>/i)?.[0]
   if (!block) return null
@@ -63,15 +86,7 @@ export function parseTweetRss(xml: string, handle: string): Tweet | null {
 
   const id = link?.match(/status\/(\d+)/)?.[1] ?? `${handle}:${postedAt}`
 
-  return {
-    id,
-    handle,
-    displayName,
-    text,
-    likes: 0,
-    reposts: 0,
-    postedAt,
-  }
+  return { id, handle, displayName, text, likes: 0, reposts: 0, postedAt }
 }
 
 function extractTweetContent(
@@ -84,18 +99,11 @@ function extractTweetContent(
   if (title) {
     const fromTitle = title.match(/^(.+?)\s*\(@[^)]+\):\s*(.+)$/s)
     if (fromTitle) {
-      return {
-        displayName: fromTitle[1]!.trim(),
-        text: stripHtml(fromTitle[2]!.trim()),
-      }
+      return { displayName: fromTitle[1]!.trim(), text: stripHtml(fromTitle[2]!.trim()) }
     }
   }
 
-  const plain = stripHtml(description ?? title ?? '')
-  return {
-    displayName: username,
-    text: plain,
-  }
+  return { displayName: username, text: stripHtml(description ?? title ?? '') }
 }
 
 function stripHtml(raw: string): string {

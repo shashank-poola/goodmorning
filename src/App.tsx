@@ -59,8 +59,8 @@ export function App() {
         <div className={styles.content} data-dashboard-scroll>
           <PageHeader onOpenFinance={openFinance} />
           <DashboardGrid />
+          <ComposeBar />
         </div>
-        <ComposeBar />
       </div>
       <CommandPalette
         open={paletteOpen}

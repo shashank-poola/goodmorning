@@ -55,6 +55,90 @@
 
 .reply:hover { text-decoration: underline; }
 
+/* ── Paste-to-generate section (spec §4.6 manual paste flow) ── */
+.paste {
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.pasteToggle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.pasteToggle:hover { color: var(--accent-blue); }
+
+.pasteBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pasteInput {
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 12px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.pasteInput:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.pasteBtn {
+  align-self: flex-start;
+  padding: 5px 14px;
+  border-radius: 8px;
+  background: var(--accent-blue);
+  color: #000;
+  font-size: 12px;
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+
+.pasteBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.pasteBtn:not(:disabled):hover { opacity: 0.85; }
+
+.drafts {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.draft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-raised);
+  border-radius: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+}
+
+.draftText { font-size: 12px; line-height: 1.5; }
+
+.copyBtn {
+  align-self: flex-start;
+  font-size: 11px;
+  color: var(--accent-blue);
+  padding: 0;
+  transition: opacity 0.15s;
+}
+
+.copyBtn:hover { opacity: 0.7; }
+
 @media (max-width: 767px) {
   .columns { grid-template-columns: 1fr; }
 }

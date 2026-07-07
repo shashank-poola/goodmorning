@@ -1,6 +1,6 @@
 .header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 20px;
   padding: 0 0 10px;
@@ -9,15 +9,6 @@
 
 .left {
   min-width: 0;
-}
-
-.title {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: var(--text-primary);
-  line-height: 1.05;
-  margin-bottom: 4px;
 }
 
 .quote {
@@ -83,9 +74,5 @@
   .right {
     justify-content: space-between;
     padding-top: 0;
-  }
-
-  .title {
-    font-size: 26px;
   }
 }

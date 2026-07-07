@@ -2,11 +2,10 @@
   background: var(--card-bg), var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--panel-pad-y) var(--panel-pad-x);
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  height: 100%;
+  height: 100%;  /* fills the fixed grid row height */
   box-shadow: var(--elevation);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
