@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Search01Icon } from '@hugeicons/core-free-icons'
-import { DeviceBattery } from './DeviceBattery'
 import { Icon } from './Icon'
 import styles from './TopBar.module.css'
 
@@ -50,7 +49,6 @@ export function TopBar({ onOpenSearch }: Props) {
       </button>
 
       <div className={styles.right}>
-        <DeviceBattery />
         <Clock />
       </div>
     </header>

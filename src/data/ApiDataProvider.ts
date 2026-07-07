@@ -1,6 +1,6 @@
 import type { DataProvider } from './DataProvider'
 import { MockDataProvider } from './MockDataProvider'
-import type { CalendarEvent, CalendarSource } from './types'
+import type { CalendarEvent, CalendarSource, NewsItem, RepoTrend } from './types'
 import type { Email, Mailbox } from './types'
 
 interface CalendarResponse {
@@ -27,9 +27,8 @@ async function fetchJson<T>(url: string): Promise<T> {
 }
 
 /**
- * Hybrid provider: calendar + email from the backend API, everything else
- * from mock until each subsystem ships. Keeps the dashboard usable while we
- * integrate one source at a time.
+ * Hybrid provider: calendar, email, news, and GitHub from the backend API;
+ * everything else from mock until each subsystem ships.
  */
 export class ApiDataProvider implements DataProvider {
   private readonly fallback: MockDataProvider
@@ -58,10 +57,10 @@ export class ApiDataProvider implements DataProvider {
 
     this.getCalendar = () => fetchJson<CalendarResponse>(`${this.apiBase}/api/calendar`)
     this.getEmails = () => fetchJson<EmailsResponse>(`${this.apiBase}/api/emails`)
+    this.getNews = () => fetchJson<NewsItem[]>(`${this.apiBase}/api/news`)
+    this.getRepoTrends = () => fetchJson<RepoTrend[]>(`${this.apiBase}/api/repos`)
 
     this.getQuote = this.fallback.getQuote
-    this.getNews = this.fallback.getNews
-    this.getRepoTrends = this.fallback.getRepoTrends
     this.getTweets = this.fallback.getTweets
     this.getLinkedIn = this.fallback.getLinkedIn
     this.getTodos = this.fallback.getTodos

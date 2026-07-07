@@ -1,9 +1,12 @@
 import { Hono } from 'hono'
+import { NEWS_FEEDS } from './data/newsFeeds'
 import type { ServerConfig } from './config'
 import { isAppError } from './lib/errors'
+import { GitHubTrendingService } from './services/githubTrending'
 import { GoogleAccountsService } from './services/googleAccounts'
 import { GoogleCalendarService } from './services/googleCalendar'
 import { GoogleGmailService } from './services/googleGmail'
+import { RssNewsService } from './services/rssNews'
 import type { AuthStatusResponse, AuthStatusUser, StoredAccount } from './types/calendar'
 
 export function createApp(config: ServerConfig) {
@@ -11,6 +14,8 @@ export function createApp(config: ServerConfig) {
   const accounts = new GoogleAccountsService(config)
   const calendarService = new GoogleCalendarService(accounts, config)
   const gmailService = new GoogleGmailService(accounts)
+  const newsService = new RssNewsService()
+  const githubService = new GitHubTrendingService()
 
   app.get('/api/health', (c) =>
     c.json({ ok: true, service: 'goodmorning-server' }),
@@ -44,6 +49,24 @@ export function createApp(config: ServerConfig) {
     try {
       const data = await gmailService.getMergedEmails()
       return c.json(data)
+    } catch (error) {
+      return errorResponse(c, error)
+    }
+  })
+
+  app.get('/api/news', async (c) => {
+    try {
+      const items = await newsService.getNews(NEWS_FEEDS)
+      return c.json(items)
+    } catch (error) {
+      return errorResponse(c, error)
+    }
+  })
+
+  app.get('/api/repos', async (c) => {
+    try {
+      const repos = await githubService.getTrending()
+      return c.json(repos)
     } catch (error) {
       return errorResponse(c, error)
     }

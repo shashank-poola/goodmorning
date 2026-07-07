@@ -89,11 +89,11 @@ export class MockDataProvider implements DataProvider {
     this.wait({
       mailboxes: MAILBOXES,
       emails: [
-        { id: 'm1', mailboxId: 'work', sender: 'Ana Duarte', subject: 'Q3 roadmap — final review', preview: 'Before our 1:1, can you look at the two open items…', receivedAt: todayAt(7, 12), unread: true },
-        { id: 'm2', mailboxId: 'work', sender: 'GitHub', subject: 'PR #142 approved', preview: 'Your pull request "provider layer" was approved by…', receivedAt: todayAt(6, 48), unread: true },
-        { id: 'm3', mailboxId: 'personal', sender: 'Dr. Mehta', subject: 'Appointment confirmed', preview: 'Your appointment on Friday at 5pm is confirmed…', receivedAt: todayAt(6, 5), unread: false },
-        { id: 'm4', mailboxId: 'newsletters', sender: 'Benedict Evans', subject: 'AI and the next platform shift', preview: 'This week: what changes when agents do the browsing…', receivedAt: todayAt(5, 30), unread: true },
-        { id: 'm5', mailboxId: 'personal', sender: 'Mom', subject: 'Weekend plans?', preview: 'Are you coming home this weekend? Dad wants to…', receivedAt: todayAt(4, 55), unread: false },
+        { id: 'm1', mailboxId: 'work', sender: 'Ana Duarte', subject: 'Q3 roadmap — final review', preview: 'Before our 1:1, can you look at the two open items…', receivedAt: todayAt(7, 12), unread: true, important: true },
+        { id: 'm2', mailboxId: 'work', sender: 'GitHub', subject: 'PR #142 approved', preview: 'Your pull request "provider layer" was approved by…', receivedAt: todayAt(6, 48), unread: true, important: true },
+        { id: 'm3', mailboxId: 'personal', sender: 'Dr. Mehta', subject: 'Appointment confirmed', preview: 'Your appointment on Friday at 5pm is confirmed…', receivedAt: todayAt(6, 5), unread: false, important: false },
+        { id: 'm4', mailboxId: 'newsletters', sender: 'Benedict Evans', subject: 'AI and the next platform shift', preview: 'This week: what changes when agents do the browsing…', receivedAt: todayAt(5, 30), unread: true, important: false },
+        { id: 'm5', mailboxId: 'personal', sender: 'Mom', subject: 'Weekend plans?', preview: 'Are you coming home this weekend? Dad wants to…', receivedAt: todayAt(4, 55), unread: false, important: true },
       ],
     })
 

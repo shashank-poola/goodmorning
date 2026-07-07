@@ -4,9 +4,10 @@ import type { StoredAccount } from '../types/calendar'
 import type { Email, EmailsResponse, Mailbox } from '../types/email'
 import type { GoogleAccountsService } from './googleAccounts'
 
-/** Primary inbox only — skips promotions, social, updates noise. */
-const INBOX_QUERY = 'in:inbox category:primary'
-const MAX_MESSAGES_PER_ACCOUNT = 25
+/** Primary + important only — skips promotions, social, updates noise. */
+const INBOX_QUERY =
+  'in:inbox (category:primary OR is:important) -category:promotions -category:social -category:updates'
+const MAX_MESSAGES_PER_ACCOUNT = 12
 
 export class GoogleGmailService {
   constructor(private readonly accounts: GoogleAccountsService) {}
@@ -88,6 +89,7 @@ function mapGmailMessage(mailboxId: string, msg: GmailMessage): Email | null {
   const dateHeader = headerValue(headers, 'Date')
   const receivedAt = parseEmailDate(dateHeader, msg.internalDate)
 
+  const labelIds = msg.labelIds ?? []
   return {
     id: `${mailboxId}:${msg.id}`,
     mailboxId,
@@ -95,7 +97,8 @@ function mapGmailMessage(mailboxId: string, msg: GmailMessage): Email | null {
     subject,
     preview: msg.snippet ?? '',
     receivedAt,
-    unread: (msg.labelIds ?? []).includes('UNREAD'),
+    unread: labelIds.includes('UNREAD'),
+    important: labelIds.includes('IMPORTANT'),
   }
 }
 

@@ -37,6 +37,8 @@ export interface Email {
   preview: string
   receivedAt: string // ISO datetime
   unread: boolean
+  /** Gmail IMPORTANT label — used by the Important Emails widget. */
+  important?: boolean
 }
 
 export interface NewsItem {

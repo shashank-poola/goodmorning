@@ -1,6 +1,7 @@
 .list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .email,
@@ -11,7 +12,9 @@
   border-bottom: 1px solid var(--border);
 }
 
-.email { opacity: 0.7; }
+.email {
+  opacity: 0.75;
+}
 
 .dot {
   width: 8px;
@@ -20,10 +23,16 @@
   margin-top: 6px;
   flex-shrink: 0;
 }
-.dot[data-color='gold'] { background: var(--accent-gold); }
-.dot[data-color='sage'] { background: var(--accent-sage); }
-.dot[data-color='blue'] { background: var(--accent-blue); }
-.dot[data-color='clay'] { background: var(--accent-clay); }
+
+.dot[data-status='read'] {
+  background: var(--border-strong);
+  opacity: 0.45;
+}
+
+.dot[data-status='unread'][data-account='gold'] { background: var(--accent-gold); opacity: 1; }
+.dot[data-status='unread'][data-account='sage'] { background: var(--accent-sage); opacity: 1; }
+.dot[data-status='unread'][data-account='blue'] { background: var(--accent-blue); opacity: 1; }
+.dot[data-status='unread'][data-account='clay'] { background: var(--accent-clay); opacity: 1; }
 
 .content {
   display: flex;
@@ -46,16 +55,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.unreadDot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-clay);
-  margin-left: 6px;
-  vertical-align: middle;
 }
 
 .preview {

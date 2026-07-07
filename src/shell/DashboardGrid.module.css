@@ -3,14 +3,17 @@
   display: grid;
   gap: var(--gap);
   padding: var(--gap) 0 calc(var(--gap) + 8px);
-  grid-template-columns: 1.15fr 1fr 1fr 1fr;
-  /* Both rows are capped so cards scroll internally rather than growing to
-     fit their content. */
-  grid-template-rows: 532px 242px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  /* Fixed tracks — cards scroll internally, never grow the page. */
+  grid-template-rows: 248px 248px 236px;
+  height: calc(248px + 248px + 236px + 2 * var(--gap));
+  max-height: calc(248px + 248px + 236px + 2 * var(--gap));
+  overflow: hidden;
   align-content: start;
   grid-template-areas:
-    'calendar gmail  gmail tweets'
-    'linkedin emails news  todos';
+    'calendar calendar calendar gmail gmail gmail gmail gmail gmail todos todos todos'
+    'calendar calendar calendar gmail gmail gmail gmail gmail gmail linkedin linkedin linkedin'
+    'emails emails emails tweets tweets tweets news news news news news news';
   min-width: 0;
 }
 
@@ -19,24 +22,28 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  animation: fadeUp 0.5s both;
+  max-height: 100%;
+  overflow: hidden;
+  animation: fadeUp 0.45s both;
 }
 
-.grid > div:nth-child(2) { animation-delay: 50ms; }
-.grid > div:nth-child(3) { animation-delay: 100ms; }
-.grid > div:nth-child(4) { animation-delay: 150ms; }
-.grid > div:nth-child(5) { animation-delay: 200ms; }
-.grid > div:nth-child(6) { animation-delay: 250ms; }
-.grid > div:nth-child(7) { animation-delay: 300ms; }
+.grid > div:nth-child(2) { animation-delay: 40ms; }
+.grid > div:nth-child(3) { animation-delay: 80ms; }
+.grid > div:nth-child(4) { animation-delay: 120ms; }
+.grid > div:nth-child(5) { animation-delay: 160ms; }
+.grid > div:nth-child(6) { animation-delay: 200ms; }
+.grid > div:nth-child(7) { animation-delay: 240ms; }
 
 .grid > div > section {
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -54,21 +61,43 @@
 
 @media (max-width: 1199px) {
   .grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: 240px 240px 220px 220px;
+    height: auto;
+    max-height: none;
+    overflow: visible;
     grid-template-areas:
-      'calendar gmail'
-      'linkedin emails'
-      'tweets   news'
-      'todos    todos';
+      'calendar calendar calendar gmail gmail gmail'
+      'calendar calendar calendar gmail gmail gmail'
+      'todos todos linkedin linkedin emails emails'
+      'tweets tweets tweets news news news';
+  }
+
+  .grid > div {
+    max-height: 240px;
   }
 }
 
 @media (max-width: 767px) {
   .grid {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
+    height: auto;
+    max-height: none;
+    overflow: visible;
     grid-template-areas:
-      'calendar' 'gmail' 'emails' 'tweets' 'news' 'linkedin' 'todos';
-    padding: var(--gap) 16px calc(72px + var(--gap));
+      'calendar'
+      'gmail'
+      'todos'
+      'linkedin'
+      'emails'
+      'tweets'
+      'news';
+    padding: var(--gap) 0 calc(72px + var(--gap));
+  }
+
+  .grid > div {
+    min-height: 280px;
+    max-height: 320px;
   }
 }

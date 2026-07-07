@@ -6,17 +6,20 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-it('renders emails with sender, subject, and mailbox dot', async () => {
+it('renders emails with sender, subject, and status dots', async () => {
   render(<EmailsWidget />)
   expect(await screen.findByText('Ana Duarte')).toBeInTheDocument()
   expect(screen.getByText(/q3 roadmap/i)).toBeInTheDocument()
-  expect(screen.getAllByTestId('mailbox-dot').length).toBeGreaterThan(2)
+  expect(screen.getAllByTestId('status-dot').length).toBeGreaterThanOrEqual(2)
 })
 
-it('marks unread emails', async () => {
+it('shows unread status on important emails', async () => {
   render(<EmailsWidget />)
   await screen.findByText('Ana Duarte')
-  expect(screen.getAllByTestId('unread-dot').length).toBeGreaterThan(0)
+  const unreadDots = screen.getAllByTestId('status-dot').filter(
+    (el) => el.getAttribute('data-status') === 'unread',
+  )
+  expect(unreadDots.length).toBeGreaterThan(0)
 })
 
 it('shows error state with retry when provider fails', async () => {

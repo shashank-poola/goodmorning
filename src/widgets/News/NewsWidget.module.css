@@ -1,20 +1,32 @@
 .tabs {
   display: flex;
-  gap: 4px;
-  margin-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  width: fit-content;
 }
 
 .tab,
 .tabActive {
   font-size: 12px;
-  padding: 4px 10px;
+  font-weight: 500;
+  padding: 5px 12px;
   border-radius: 999px;
   color: var(--text-secondary);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tab:hover {
+  color: var(--text-primary);
 }
 
 .tabActive {
-  color: var(--accent-gold);
-  background: var(--bg-raised);
+  color: var(--text-primary);
+  background: var(--bg-panel);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .list {

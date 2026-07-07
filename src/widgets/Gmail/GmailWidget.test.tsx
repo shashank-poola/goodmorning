@@ -11,7 +11,7 @@ it('renders the full inbox with an unread summary', async () => {
   expect(await screen.findByText('Ana Duarte')).toBeInTheDocument()
   expect(screen.getByText('Mom')).toBeInTheDocument()
   expect(screen.getByText(/unread/i)).toBeInTheDocument()
-  expect(screen.getAllByTestId('mailbox-dot').length).toBe(5)
+  expect(screen.getAllByTestId('status-dot').length).toBe(5)
 })
 
 it('shows error state with retry when provider fails', async () => {

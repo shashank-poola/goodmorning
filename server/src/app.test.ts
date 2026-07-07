@@ -41,6 +41,22 @@ describe('API routes', () => {
     expect(body.authUrl).toBe('/auth/google')
   })
 
+  it('GET /api/news returns an array', async () => {
+    const app = await makeApp()
+    const res = await app.request('/api/news')
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(Array.isArray(body)).toBe(true)
+  })
+
+  it('GET /api/repos returns an array', async () => {
+    const app = await makeApp()
+    const res = await app.request('/api/repos')
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(Array.isArray(body)).toBe(true)
+  })
+
   it('GET /api/calendar returns 401 when no accounts connected', async () => {
     const app = await makeApp()
     const res = await app.request('/api/calendar')

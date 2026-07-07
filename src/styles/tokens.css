@@ -1,12 +1,12 @@
 :root {
   /* ---- Dark (default) ---- */
   --bg-base:    #0a0a0a;
-  --bg-panel:   #141414;
+  --bg-panel:   #121212;
   --bg-raised:  #1a1a1a;
   --bg-sidebar: #0f0f0f;
   --bg-active:  #1d1d1f;
-  --border:       #252525;
-  --border-strong:#383838;
+  --border:       rgba(255, 255, 255, 0.06);
+  --border-strong:rgba(255, 255, 255, 0.12);
   --text-primary:   #f5f5f7;
   --text-secondary: #86868b;
 
@@ -15,7 +15,7 @@
   --accent-primary-hover: #e0e0e5;
   --accent-tint:          rgba(255, 255, 255, 0.06);
 
-  /* Widget panel accents (unchanged semantics) */
+  /* Widget panel accents */
   --accent-gold: #f59e0b;
   --accent-sage: #4ade80;
   --accent-blue: #60a5fa;
@@ -27,16 +27,26 @@
   --font-ui:      'Geist', system-ui, -apple-system, sans-serif;
   --font-display: 'Geist', system-ui, sans-serif;
 
-  --radius: 10px;
-  --gap:    18px;
+  --radius:    14px;
+  --radius-lg: 16px;
+  --gap:       16px;
   --sidebar-width:           248px;
   --sidebar-collapsed-width: 60px;
   --header-height: 56px;
 
   --glow-gold:    none;
-  --elevation:    0 1px 2px rgba(0, 0, 0, 0.4);
-  --card-hover:   0 8px 24px rgba(0, 0, 0, 0.5);
+  --elevation:    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+                  0 8px 24px rgba(0, 0, 0, 0.35);
+  --card-hover:   0 1px 0 rgba(255, 255, 255, 0.06) inset,
+                  0 12px 32px rgba(0, 0, 0, 0.45);
   --hairline-gold: rgba(245, 158, 11, 0.3);
+
+  /* Bento card surface */
+  --card-bg: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0) 48%
+  );
 }
 
 :root[data-theme='light'] {
@@ -45,8 +55,8 @@
   --bg-raised:  #f0f0f2;
   --bg-sidebar: #ffffff;
   --bg-active:  #e8e8ed;
-  --border:       #d2d2d7;
-  --border-strong:#b0b0b8;
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-strong:rgba(0, 0, 0, 0.14);
   --text-primary:   #1d1d1f;
   --text-secondary: #6e6e73;
 
@@ -60,7 +70,15 @@
   --accent-clay: #dc2626;
   --accent-badge: #d97706;
 
-  --elevation:  0 1px 2px rgba(0, 0, 0, 0.06);
-  --card-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
+  --elevation:  0 1px 0 rgba(255, 255, 255, 0.8) inset,
+                0 4px 16px rgba(0, 0, 0, 0.06);
+  --card-hover: 0 1px 0 rgba(255, 255, 255, 0.9) inset,
+                0 8px 24px rgba(0, 0, 0, 0.1);
   --hairline-gold: rgba(217, 119, 6, 0.3);
+
+  --card-bg: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0) 48%
+  );
 }

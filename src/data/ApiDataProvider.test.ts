@@ -74,6 +74,28 @@ it('getEmails fetches from the API and returns parsed JSON', async () => {
   expect(fetch).toHaveBeenCalledWith('http://localhost:3001/api/emails')
 })
 
+it('getNews fetches from the API', async () => {
+  const payload = [
+    {
+      id: 'n1',
+      category: 'tech' as const,
+      headline: 'Test',
+      source: 'The Verge',
+      publishedAt: '2026-07-07T06:40:00.000Z',
+      url: 'https://example.com',
+    },
+  ]
+
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({ ok: true, json: async () => payload }),
+  )
+
+  const provider = new ApiDataProvider('', { latencyMs: 0 })
+  await expect(provider.getNews()).resolves.toEqual(payload)
+  expect(fetch).toHaveBeenCalledWith('/api/news')
+})
+
 it('delegates getQuote to the mock fallback', async () => {
   vi.stubGlobal(
     'fetch',

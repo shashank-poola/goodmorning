@@ -26,8 +26,10 @@ export function GmailWidget() {
                   <li key={e.id} className={e.unread ? styles.unread : styles.email}>
                     <span
                       className={styles.dot}
-                      data-testid="mailbox-dot"
-                      data-color={colorOf(e.mailboxId)}
+                      data-testid="status-dot"
+                      data-status={e.unread ? 'unread' : 'read'}
+                      data-account={colorOf(e.mailboxId)}
+                      title={e.unread ? 'Unread' : 'Read'}
                     />
                     <span className={styles.sender}>{e.sender}</span>
                     <span className={styles.subject}>{e.subject}</span>

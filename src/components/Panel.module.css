@@ -1,11 +1,12 @@
 .panel {
-  background: var(--bg-panel);
+  background: var(--card-bg), var(--bg-panel);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  height: 100%;
   box-shadow: var(--elevation);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -18,42 +19,42 @@
 .title {
   display: flex;
   align-items: center;
-  gap: 9px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
-  padding-bottom: 11px;
-  margin-bottom: 14px;
-  border-bottom: 1px solid var(--border);
-}
-
-/* Prominent per-section accent tab before each heading. */
-.title::before {
-  content: '';
-  width: 4px;
-  height: 15px;
-  border-radius: 2px;
-  background: var(--accent-gold);
+  padding-bottom: 14px;
+  margin-bottom: 4px;
   flex-shrink: 0;
 }
 
-.panel[data-accent='sage'] .title::before { background: var(--accent-sage); }
-.panel[data-accent='blue'] .title::before { background: var(--accent-blue); }
-.panel[data-accent='clay'] .title::before { background: var(--accent-clay); }
-.panel[data-accent='gold'] .title::before { background: var(--accent-gold); }
+.title::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  background: var(--accent-gold);
+  flex-shrink: 0;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-gold) 40%, transparent);
+}
+
+.panel[data-accent='sage'] .title::before { background: var(--accent-sage); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-sage) 40%, transparent); }
+.panel[data-accent='blue'] .title::before { background: var(--accent-blue); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-blue) 40%, transparent); }
+.panel[data-accent='clay'] .title::before { background: var(--accent-clay); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-clay) 40%, transparent); }
+.panel[data-accent='gold'] .title::before { background: var(--accent-gold); box-shadow: 0 0 10px color-mix(in srgb, var(--accent-gold) 40%, transparent); }
 
 .body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  padding-right: 2px;
 }
 
 .skeleton span {
   display: block;
   height: 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 10px;
   background: linear-gradient(90deg, var(--bg-raised) 25%, var(--border) 50%, var(--bg-raised) 75%);
   background-size: 200% 100%;
