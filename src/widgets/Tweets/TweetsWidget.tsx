@@ -33,14 +33,24 @@ function XProfileLinks() {
   )
 }
 
+/** Client-side guard: silently drop any tweet that contains RSS-error text so
+ *  stale/hot-reloaded backend responses never surface whitelist errors in the UI. */
+const ERROR_FRAGMENTS = [/whitelist/i, /rss.*reader/i, /send an email.*rss/i, /rate.?limit/i]
+function isErrorTweet(text: string) {
+  return ERROR_FRAGMENTS.some((p) => p.test(text))
+}
+
 export function TweetsWidget() {
   const state = useWidgetData(provider.getTweets)
   return (
     <Panel title="Tweets" accent="blue" id="tweets">
       <WidgetBody {...state} isEmpty={(d) => d.length === 0} emptyNode={<XProfileLinks />}>
-        {(tweets) => (
+        {(tweets) => {
+          const clean = tweets.filter((t) => !isErrorTweet(t.text))
+          if (clean.length === 0) return <XProfileLinks />
+          return (
           <ul className={styles.list}>
-            {tweets.map((t) => (
+            {clean.map((t) => (
               <li key={t.id} className={styles.tweet}>
                 <span className={styles.avatar} aria-hidden="true">
                   {t.displayName[0]}
@@ -58,7 +68,8 @@ export function TweetsWidget() {
               </li>
             ))}
           </ul>
-        )}
+          )
+        }}
       </WidgetBody>
     </Panel>
   )
