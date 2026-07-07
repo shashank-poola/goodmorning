@@ -309,6 +309,18 @@
   white-space: nowrap;
 }
 
+/* Colored dot per connected Google account */
+.accountDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.accountDot[data-color='gold'] { background: var(--accent-gold); }
+.accountDot[data-color='sage'] { background: var(--accent-sage); }
+.accountDot[data-color='blue'] { background: var(--accent-blue); }
+.accountDot[data-color='clay'] { background: var(--accent-clay); }
+
 /* Profile button — full card */
 .profileBtn {
   position: relative;

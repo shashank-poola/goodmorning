@@ -1,17 +1,20 @@
 /*
  * Bento grid — fixed card heights matched to each section's content.
  *
- *  Top row (360px tall):
+ *  Top row (360px):
  *  ┌─────────────┬──────────────────────────────┬─────────────┐
  *  │  MEETINGS   │           GMAIL              │   TWEETS    │
- *  │   3 cols    │          6 cols              │   3 cols    │
  *  └─────────────┴──────────────────────────────┴─────────────┘
  *
- *  Bottom row (268px tall):
+ *  Middle row (268px):
  *  ┌─────────────┬──────────────┬───────────────┬─────────────┐
  *  │  LINKEDIN   │ IMPORTANT    │  NEWS & GH    │   TO-DO     │
- *  │   3 cols    │ EMAILS 3cols │   3 cols      │   3 cols    │
  *  └─────────────┴──────────────┴───────────────┴─────────────┘
+ *
+ *  Bottom row (130px) — spec §5 Yesterday Recap:
+ *  ┌────────────────────────────────────────────────────────────┐
+ *  │                    YESTERDAY RECAP                         │
+ *  └────────────────────────────────────────────────────────────┘
  *
  *  The parent .content div scrolls — cards have fixed heights
  *  and never compress. Internal content scrolls inside each card.
@@ -22,12 +25,11 @@
   gap: 16px;
   padding-bottom: 8px;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  /* Fixed heights: top row for calendar/gmail/tweets content,
-     bottom row for compact widgets */
-  grid-template-rows: 360px 268px;
+  grid-template-rows: 360px 268px 130px;
   grid-template-areas:
     'calendar calendar calendar gmail gmail gmail gmail gmail gmail tweets tweets tweets'
-    'linkedin linkedin linkedin emails emails emails news news news todos todos todos';
+    'linkedin linkedin linkedin emails emails emails news news news todos todos todos'
+    'recap    recap    recap    recap  recap  recap  recap  recap  recap  recap  recap  recap';
 }
 
 /* Named grid areas */
@@ -38,6 +40,7 @@
 .emails   { grid-area: emails; }
 .news     { grid-area: news; }
 .todos    { grid-area: todos; }
+.recap    { grid-area: recap; }
 
 /* Every wrapper div must fill its grid cell so Panel height: 100% works */
 .calendar,
@@ -46,7 +49,8 @@
 .linkedin,
 .emails,
 .news,
-.todos {
+.todos,
+.recap {
   display: flex;
   flex-direction: column;
 }
@@ -55,7 +59,7 @@
 @media (max-width: 1199px) and (min-width: 768px) {
   .grid {
     gap: 12px;
-    grid-template-rows: 320px 250px;
+    grid-template-rows: 320px 250px 120px;
   }
 }
 
@@ -71,11 +75,11 @@
       'linkedin'
       'emails'
       'news'
-      'todos';
+      'todos'
+      'recap';
     gap: 12px;
   }
 
-  /* On mobile each card is tall enough to show its content */
   .calendar { min-height: 300px; }
   .gmail    { min-height: 320px; }
   .tweets   { min-height: 300px; }
@@ -83,4 +87,5 @@
   .emails   { min-height: 240px; }
   .news     { min-height: 280px; }
   .todos    { min-height: 240px; }
+  .recap    { min-height: 120px; }
 }

@@ -17,9 +17,12 @@ interface RssSource {
 }
 
 /**
- * Multiple RSS/Atom sources for X posts — tried in parallel, first success wins.
+ * Multiple RSS/Atom sources for X posts — tried in parallel, first VALID result wins.
  * Nitter mirrors go offline frequently; RSSHub public instances are more reliable.
  * Spec §4.5: file-driven follow list → best available free-then-paid source.
+ *
+ * NOTE: xcancel.com requires a whitelist for RSS readers and returns a fake RSS
+ * feed with an error message as tweet content — intentionally excluded.
  */
 const RSS_SOURCES: RssSource[] = [
   // RSSHub public instances (aggregator, more stable than individual Nitter mirrors)
@@ -31,9 +34,26 @@ const RSS_SOURCES: RssSource[] = [
   { buildUrl: (u) => `https://nitter.privacydev.net/${u}/rss` },
   { buildUrl: (u) => `https://nitter.1d4.us/${u}/rss` },
   { buildUrl: (u) => `https://nitter.kavin.rocks/${u}/rss` },
-  { buildUrl: (u) => `https://xcancel.com/${u}/rss` },
   { buildUrl: (u) => `https://twiiit.com/${u}/rss` },
 ]
+
+/**
+ * Error patterns returned by RSS mirrors that require whitelisting or rate-limit
+ * the reader. A tweet containing these strings is rejected so the next source wins.
+ */
+const ERROR_PATTERNS = [
+  /not yet whitelisted/i,
+  /whitelist/i,
+  /send an email.*rss/i,
+  /rate limit/i,
+  /too many requests/i,
+  /access denied/i,
+  /instance is down/i,
+]
+
+function isErrorContent(text: string): boolean {
+  return ERROR_PATTERNS.some((p) => p.test(text))
+}
 
 const HEADERS = { 'User-Agent': 'GoodMorning/1.0 (RSS reader; spec §4.5)' }
 /** Per-source timeout — fail fast and let Promise.any() win with the first working source. */
@@ -59,6 +79,8 @@ export class TweetRssService {
       const xml = await res.text()
       const tweet = parseTweetRss(xml, handle)
       if (!tweet) throw new Error('empty feed')
+      // Reject error/whitelist messages masquerading as tweet content
+      if (isErrorContent(tweet.text)) throw new Error('error content in feed')
       return tweet
     })
 
@@ -86,7 +108,9 @@ export function parseTweetRss(xml: string, handle: string): Tweet | null {
 
   const id = link?.match(/status\/(\d+)/)?.[1] ?? `${handle}:${postedAt}`
 
-  return { id, handle, displayName, text, likes: 0, reposts: 0, postedAt }
+  const { likes, reposts } = parseEngagement(description ?? '')
+
+  return { id, handle, displayName, text, likes, reposts, postedAt }
 }
 
 function extractTweetContent(
@@ -104,6 +128,41 @@ function extractTweetContent(
   }
 
   return { displayName: username, text: stripHtml(description ?? title ?? '') }
+}
+
+/**
+ * Parses engagement counts from Nitter/RSSHub RSS descriptions.
+ * Nitter includes a footer like: "♥ 1,234 · ⇄ 56" or "❤ 1.2k | RT 56"
+ * RSSHub may use <media:statistics> attributes.
+ * Returns 0 for either count if not found.
+ */
+function parseEngagement(raw: string): { likes: number; reposts: number } {
+  const text = stripHtml(raw)
+
+  // Pattern: "♥ 1,234" or "❤ 1.2k" — likes
+  const likeMatch = text.match(/[♥❤️]\s*([\d,.]+k?)/i)
+  // Pattern: "⇄ 56" or "RT 56" or "↺ 56" — reposts
+  const repostMatch = text.match(/[⇄↺]|RT\s+([\d,.]+k?)/i) ??
+    text.match(/(?:retweet|rt)[:\s]*([\d,.]+k?)/i)
+
+  // RSSHub <media:statistics likes="123" retweets="45" />
+  const mediaLikes = raw.match(/likes="(\d+)"/i)?.[1]
+  const mediaRT = raw.match(/retweets="(\d+)"/i)?.[1]
+
+  return {
+    likes: parseCount(mediaLikes ?? likeMatch?.[1] ?? ''),
+    reposts: parseCount(mediaRT ?? repostMatch?.[1] ?? ''),
+  }
+}
+
+function parseCount(raw: string): number {
+  if (!raw) return 0
+  const clean = raw.replace(/,/g, '').trim()
+  if (clean.endsWith('k') || clean.endsWith('K')) {
+    return Math.round(parseFloat(clean) * 1000)
+  }
+  const n = parseInt(clean, 10)
+  return Number.isNaN(n) ? 0 : n
 }
 
 function stripHtml(raw: string): string {

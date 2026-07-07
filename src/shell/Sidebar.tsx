@@ -97,7 +97,7 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
   const [profileOpen, setProfileOpen] = useState(false)
 
   const { theme, toggle } = useAppTheme()
-  const { user, connected, loading: authLoading, connect } = useAppAuth()
+  const { user, connected, accounts, loading: authLoading, connect } = useAppAuth()
 
   const displayName = user?.name ?? 'Sign in'
   const displayEmail = user?.email ?? 'Connect Google account'
@@ -263,7 +263,7 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
               )}
             </button>
 
-            {!connected && (
+            {!connected ? (
               <button
                 type="button"
                 className={styles.menuRowBtn}
@@ -275,6 +275,34 @@ export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onTogg
                   <span className={styles.menuLabel}>Connect Google</span>
                 </span>
               </button>
+            ) : (
+              <>
+                {/* Connected accounts list */}
+                {accounts.map((acc) => (
+                  <div key={acc.id} className={styles.menuRow}>
+                    <span className={styles.menuLeft}>
+                      <span
+                        className={styles.accountDot}
+                        data-color={acc.color}
+                        aria-hidden="true"
+                      />
+                      <span className={styles.menuLabel}>{acc.email}</span>
+                    </span>
+                  </div>
+                ))}
+                {/* Add another account — re-runs OAuth, backend upserts new token */}
+                <button
+                  type="button"
+                  className={styles.menuRowBtn}
+                  onClick={connect}
+                  aria-label="Add another Google account"
+                >
+                  <span className={styles.menuLeft}>
+                    <Icon icon={Mail01Icon} size={17} />
+                    <span className={styles.menuLabel}>Add Google account</span>
+                  </span>
+                </button>
+              </>
             )}
 
             <button

@@ -6,6 +6,19 @@ import styles from './LinkedInWidget.module.css'
 
 const apiBase = import.meta.env.VITE_API_BASE_URL ?? ''
 
+/** Spec §4.6: "drafts into a file for manual copy-paste back onto LinkedIn" */
+function downloadDrafts(drafts: string[]): void {
+  const ts = new Date().toISOString().slice(0, 10)
+  const body = drafts.map((d, i) => `--- Reply ${i + 1} ---\n${d}`).join('\n\n')
+  const blob = new Blob([body], { type: 'text/plain' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `linkedin-reply-drafts-${ts}.txt`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 async function generateReplies(text: string): Promise<string[]> {
   const res = await fetch(`${apiBase}/api/linkedin/paste`, {
     method: 'POST',
@@ -73,20 +86,30 @@ function PasteSection() {
           </button>
 
           {drafts.length > 0 && (
-            <ul className={styles.drafts}>
-              {drafts.map((draft, i) => (
-                <li key={i} className={styles.draft}>
-                  <span className={styles.draftText}>{draft}</span>
-                  <button
-                    type="button"
-                    className={styles.copyBtn}
-                    onClick={() => copyDraft(draft, i)}
-                  >
-                    {copied === i ? '✓ Copied' : '✦ Copy'}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <>
+              <button
+                type="button"
+                className={styles.downloadBtn}
+                onClick={() => downloadDrafts(drafts)}
+                title="Download all drafts as a text file"
+              >
+                ↓ Download all drafts
+              </button>
+              <ul className={styles.drafts}>
+                {drafts.map((draft, i) => (
+                  <li key={i} className={styles.draft}>
+                    <span className={styles.draftText}>{draft}</span>
+                    <button
+                      type="button"
+                      className={styles.copyBtn}
+                      onClick={() => copyDraft(draft, i)}
+                    >
+                      {copied === i ? '✓ Copied' : '✦ Copy'}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </div>
       )}

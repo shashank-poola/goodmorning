@@ -27,6 +27,12 @@
   color: var(--text-secondary);
 }
 
+.addError {
+  font-size: 12px;
+  color: var(--accent-clay);
+  margin: 0 0 4px;
+}
+
 .addBtn {
   padding: 9px 14px;
   border-radius: 10px;

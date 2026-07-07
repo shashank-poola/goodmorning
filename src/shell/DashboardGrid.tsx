@@ -3,6 +3,7 @@ import { EmailsWidget } from '../widgets/Emails/EmailsWidget'
 import { GmailWidget } from '../widgets/Gmail/GmailWidget'
 import { LinkedInWidget } from '../widgets/LinkedIn/LinkedInWidget'
 import { NewsWidget } from '../widgets/News/NewsWidget'
+import { RecapWidget } from '../widgets/Recap/RecapWidget'
 import { TodosWidget } from '../widgets/Todos/TodosWidget'
 import { TweetsWidget } from '../widgets/Tweets/TweetsWidget'
 import styles from './DashboardGrid.module.css'
@@ -17,6 +18,7 @@ export function DashboardGrid() {
       <div className={styles.emails}><EmailsWidget /></div>
       <div className={styles.news}><NewsWidget /></div>
       <div className={styles.todos}><TodosWidget /></div>
+      <div className={styles.recap}><RecapWidget /></div>
     </main>
   )
 }

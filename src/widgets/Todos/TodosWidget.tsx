@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Panel, WidgetBody } from '../../components/Panel'
 import { useWidgetData } from '../../components/useWidgetData'
 import { provider } from '../../data/providerFactory'
@@ -18,8 +18,7 @@ function TodoList({
     if (!target) return
     const nextDone = !target.done
     const prev = todos
-    const optimistic = todos.map((t) => (t.id === id ? { ...t, done: nextDone } : t))
-    onChange(optimistic)
+    onChange(todos.map((t) => (t.id === id ? { ...t, done: nextDone } : t)))
 
     if (!todosUseApi()) return
     try {
@@ -97,30 +96,35 @@ function TodoList({
 export function TodosWidget() {
   const state = useWidgetData(provider.getTodos)
   const [draft, setDraft] = useState('')
-  const [todos, setTodos] = useState<Todo[]>([])
-
-  useEffect(() => {
-    if (state.data) setTodos(state.data)
-  }, [state.data])
+  const [addError, setAddError] = useState<string | null>(null)
+  /**
+   * null = no local changes yet → use server data directly (avoids a one-render
+   * delay where isEmpty would briefly see [] and show "Nothing here").
+   * After any optimistic update this becomes a Todo[] we own.
+   */
+  const [localTodos, setLocalTodos] = useState<Todo[] | null>(null)
 
   const addTodo = async () => {
     const text = draft.trim()
     if (!text) return
+    setAddError(null)
 
     if (todosUseApi()) {
       try {
         const created = await createTodo(text)
-        setTodos((prev) => [created, ...prev])
+        setLocalTodos((prev) => [created, ...(prev ?? state.data ?? [])])
         setDraft('')
-      } catch {
-        /* keep draft */
+      } catch (err: unknown) {
+        // Surface 409 duplicate errors from backend intelligence (spec §4.3)
+        const msg = err instanceof Error ? err.message : 'Could not add task'
+        setAddError(msg)
       }
       return
     }
 
-    setTodos((prev) => [
+    setLocalTodos((prev) => [
       { id: `local-${Date.now()}`, text, priority: 'medium', done: false },
-      ...prev,
+      ...(prev ?? state.data ?? []),
     ])
     setDraft('')
   }
@@ -137,7 +141,10 @@ export function TodosWidget() {
         <input
           className={styles.addInput}
           value={draft}
-          onChange={(e) => setDraft(e.target.value)}
+          onChange={(e) => {
+            setDraft(e.target.value)
+            if (addError) setAddError(null)
+          }}
           placeholder="Add a task for today…"
           aria-label="New todo"
         />
@@ -145,9 +152,15 @@ export function TodosWidget() {
           Add
         </button>
       </form>
+      {addError && <p className={styles.addError}>{addError}</p>}
 
-      <WidgetBody {...state} isEmpty={() => todos.length === 0}>
-        {() => <TodoList todos={todos} onChange={setTodos} />}
+      <WidgetBody {...state} isEmpty={(data) => data.length === 0}>
+        {(data) => (
+          <TodoList
+            todos={localTodos ?? data}
+            onChange={setLocalTodos}
+          />
+        )}
       </WidgetBody>
     </Panel>
   )
