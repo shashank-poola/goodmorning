@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react'
+import { ThemeProvider } from './hooks/ThemeContext'
 import { App } from './App'
 
 it('renders topbar clock and sidebar navigation', () => {
-  render(<App />)
+  render(
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>,
+  )
   expect(screen.getByTestId('clock-IST')).toBeInTheDocument()
   expect(screen.getByTestId('clock-GMT')).toBeInTheDocument()
   expect(screen.getByTestId('clock-EST')).toBeInTheDocument()

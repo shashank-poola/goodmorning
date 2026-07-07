@@ -1,6 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { ThemeProvider } from '../hooks/ThemeContext'
 import { ThemeToggle } from './ThemeToggle'
+
+function renderToggle() {
+  return render(
+    <ThemeProvider>
+      <ThemeToggle />
+    </ThemeProvider>,
+  )
+}
 
 afterEach(() => {
   localStorage.clear()
@@ -8,19 +17,19 @@ afterEach(() => {
 })
 
 it('toggles between light and dark and persists the choice', async () => {
-  render(<ThemeToggle />)
-  await userEvent.click(screen.getByRole('button', { name: /switch to dark mode/i }))
-  expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
-  expect(localStorage.getItem('gm-theme')).toBe('dark')
-
-  await userEvent.click(screen.getByRole('button', { name: /switch to light mode/i }))
+  renderToggle()
+  await userEvent.click(screen.getByLabelText(/switch to light mode/i))
   expect(document.documentElement.getAttribute('data-theme')).toBe('light')
   expect(localStorage.getItem('gm-theme')).toBe('light')
+
+  await userEvent.click(screen.getByLabelText(/switch to dark mode/i))
+  expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
+  expect(localStorage.getItem('gm-theme')).toBe('dark')
 })
 
 it('restores a persisted theme on mount', () => {
   localStorage.setItem('gm-theme', 'dark')
-  render(<ThemeToggle />)
+  renderToggle()
   expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
-  expect(screen.getByRole('button', { name: /switch to light mode/i })).toBeInTheDocument()
+  expect(screen.getByLabelText(/switch to light mode/i)).toBeInTheDocument()
 })

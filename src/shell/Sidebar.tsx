@@ -1,52 +1,327 @@
-import { Menu, LayoutGrid, Mail, Calendar, Newspaper, ListTodo, Wallet } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import {
+  Home01Icon,
+  DashboardSquare01Icon,
+  Mail01Icon,
+  Calendar03Icon,
+  News01Icon,
+  Task01Icon,
+  Wallet01Icon,
+  Linkedin02Icon,
+  NewTwitterIcon,
+  Message01Icon,
+  ArrowDown01Icon,
+  ArrowUp01Icon,
+  KeyboardIcon,
+  Sun03Icon,
+  Notification01Icon,
+  BookOpen01Icon,
+  UserCircleIcon,
+  PanelLeftCloseIcon,
+  PanelLeftOpenIcon,
+} from '@hugeicons/core-free-icons'
+import { Icon } from './Icon'
+import { ThemeToggle } from './ThemeToggle'
+import { scrollToSection } from './commands'
+import { useWidgetData } from '../components/useWidgetData'
+import { provider } from '../data/providerFactory'
+import { useAppTheme } from '../hooks/ThemeContext'
 import styles from './Sidebar.module.css'
 
-// `action: 'finance'` opens the slide-in drawer; everything else scrolls to a
-// section by id.
-type Item = { id: string; label: string; icon: LucideIcon; action?: 'finance' }
+type NavItem = {
+  id: string
+  label: string
+  icon: typeof Home01Icon
+  action?: 'finance'
+}
 
-const ITEMS: Item[] = [
-  { id: 'top', label: 'Menu', icon: Menu },
-  { id: 'top', label: 'Overview', icon: LayoutGrid },
-  { id: 'gmail', label: 'Messages', icon: Mail },
-  { id: 'calendar', label: 'Calendar', icon: Calendar },
-  { id: 'news', label: 'News', icon: Newspaper },
-  { id: 'finance', label: 'Finance', icon: Wallet, action: 'finance' },
-  { id: 'todos', label: 'To-Do', icon: ListTodo },
+type NavGroup = {
+  id: string
+  label: string
+  icon: typeof Home01Icon
+  items: NavItem[]
+}
+
+const GROUPS: NavGroup[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: DashboardSquare01Icon,
+    items: [
+      { id: 'top', label: 'Overview', icon: Home01Icon },
+      { id: 'gmail', label: 'Messages', icon: Mail01Icon },
+      { id: 'calendar', label: 'Calendar', icon: Calendar03Icon },
+      { id: 'news', label: 'News', icon: News01Icon },
+      { id: 'todos', label: 'To-Do', icon: Task01Icon },
+    ],
+  },
+  {
+    id: 'social',
+    label: 'Social',
+    icon: NewTwitterIcon,
+    items: [
+      { id: 'linkedin', label: 'LinkedIn', icon: Linkedin02Icon },
+      { id: 'tweets', label: 'Tweets', icon: NewTwitterIcon },
+      { id: 'emails', label: 'Important Emails', icon: Message01Icon },
+    ],
+  },
+  {
+    id: 'finances',
+    label: 'Finances',
+    icon: Wallet01Icon,
+    items: [{ id: 'finance', label: 'Finance', icon: Wallet01Icon, action: 'finance' }],
+  },
+]
+
+const MOBILE_ITEMS: NavItem[] = [
+  { id: 'top', label: 'Home', icon: Home01Icon },
+  { id: 'gmail', label: 'Mail', icon: Mail01Icon },
+  { id: 'calendar', label: 'Calendar', icon: Calendar03Icon },
+  { id: 'news', label: 'News', icon: News01Icon },
+  { id: 'finance', label: 'Finance', icon: Wallet01Icon, action: 'finance' },
 ]
 
 interface Props {
   onOpenFinance: () => void
+  activeId: string
+  onNavigate: (id: string) => void
+  collapsed: boolean
+  onToggleCollapse: () => void
 }
 
-export function Sidebar({ onOpenFinance }: Props) {
-  const go = (item: Item) => {
+export function Sidebar({ onOpenFinance, activeId, onNavigate, collapsed, onToggleCollapse }: Props) {
+  const [groupExpanded, setGroupExpanded] = useState<Record<string, boolean>>({
+    dashboard: true,
+    social: true,
+    finances: true,
+  })
+  const [profileOpen, setProfileOpen] = useState(false)
+
+  const { theme, toggle } = useAppTheme()
+
+  const { data: renewals } = useWidgetData(provider.getRenewals)
+  const notificationCount =
+    renewals?.filter((r) => {
+      const days = Math.ceil((new Date(r.dueDate).getTime() - Date.now()) / 86_400_000)
+      return days <= 7
+    }).length ?? 0
+
+  useEffect(() => {
+    const onScroll = () => {
+      const sections = ['top', 'calendar', 'gmail', 'linkedin', 'tweets', 'emails', 'news', 'todos']
+      const y = window.scrollY + 120
+      let current = 'top'
+      for (const id of sections) {
+        const el = document.getElementById(id)
+        if (el && el.offsetTop <= y) current = id
+      }
+      onNavigate(current)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [onNavigate])
+
+  const go = (item: NavItem) => {
+    onNavigate(item.id)
     if (item.action === 'finance') {
       onOpenFinance()
       return
     }
-    document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    scrollToSection(item.id)
   }
+
+  const toggleGroup = (id: string) =>
+    setGroupExpanded((prev) => ({ ...prev, [id]: !prev[id] }))
+
   return (
-    <nav className={styles.sidebar} aria-label="Sections">
-      {ITEMS.map((item, i) => {
-        const Icon = item.icon
-        return (
+    <nav
+      className={styles.sidebar}
+      aria-label="Sections"
+      data-collapsed={collapsed ? 'true' : 'false'}
+    >
+      {/* ── Header ── */}
+      <div className={styles.header}>
+        <div className={styles.brand}>
+          <span className={styles.logo} aria-hidden="true">
+            <Icon icon={Sun03Icon} size={18} />
+          </span>
+          {!collapsed && (
+            <div className={styles.brandText}>
+              <span className={styles.brandName}>Good Morning</span>
+              <span className={styles.brandSub}>Personal dashboard</span>
+            </div>
+          )}
+        </div>
+        <button
+          type="button"
+          className={styles.collapseBtn}
+          onClick={onToggleCollapse}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          <Icon icon={collapsed ? PanelLeftOpenIcon : PanelLeftCloseIcon} size={18} />
+        </button>
+      </div>
+
+      {/* ── Home ── */}
+      <button
+        type="button"
+        className={activeId === 'top' ? styles.homeActive : styles.home}
+        onClick={() => go({ id: 'top', label: 'Home', icon: Home01Icon })}
+        title={collapsed ? 'Home' : undefined}
+      >
+        <Icon icon={Home01Icon} size={18} />
+        {!collapsed && <span>Home</span>}
+      </button>
+
+      {/* ── Nav groups ── */}
+      {!collapsed &&
+        GROUPS.map((group) => {
+          const open = groupExpanded[group.id]
+          return (
+            <div key={group.id} className={styles.group}>
+              <button
+                type="button"
+                className={styles.groupHead}
+                onClick={() => toggleGroup(group.id)}
+              >
+                <span className={styles.groupLeft}>
+                  <Icon icon={group.icon} size={18} />
+                  <span>{group.label}</span>
+                </span>
+                <Icon
+                  icon={open ? ArrowUp01Icon : ArrowDown01Icon}
+                  size={16}
+                  className={styles.chevron}
+                />
+              </button>
+              {open && (
+                <ul className={styles.groupItems}>
+                  {group.items.map((item) => (
+                    <li key={item.id + item.label}>
+                      <button
+                        type="button"
+                        className={activeId === item.id ? styles.itemActive : styles.item}
+                        onClick={() => go(item)}
+                      >
+                        <Icon icon={item.icon} size={17} />
+                        <span>{item.label}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )
+        })}
+
+      {/* Collapsed: icon-only items */}
+      {collapsed &&
+        GROUPS.flatMap((g) => g.items).map((item) => (
           <button
-            key={`${item.label}-${i}`}
+            key={item.id + item.label}
             type="button"
-            className={styles.item}
+            className={activeId === item.id ? styles.homeActive : styles.home}
             onClick={() => go(item)}
             title={item.label}
           >
-            <span aria-hidden="true" className={styles.icon}>
-              <Icon size={20} strokeWidth={1.75} />
-            </span>
-            <span className={styles.label}>{item.label}</span>
+            <Icon icon={item.icon} size={18} />
           </button>
-        )
-      })}
+        ))}
+
+      {/* ── Spacer ── */}
+      <div className={styles.spacer} />
+
+      {/* ── Keyboard hint (expanded only) ── */}
+      {!collapsed && (
+        <span className={styles.footerHint}>
+          <Icon icon={KeyboardIcon} size={14} />
+          <span>Ctrl + K</span>
+        </span>
+      )}
+
+      {/* ── Profile section at bottom ── */}
+      <div className={styles.profileWrap}>
+        {profileOpen && !collapsed && (
+          <div className={styles.profileMenu}>
+            {/* Appearance row */}
+            <div className={styles.menuRow}>
+              <span className={styles.menuLabel}>Appearance</span>
+              <ThemeToggle theme={theme} onToggle={toggle} />
+            </div>
+
+            {/* Notifications row */}
+            <button
+              type="button"
+              className={styles.menuRowBtn}
+              onClick={onOpenFinance}
+              aria-label="View notifications"
+            >
+              <span className={styles.menuLeft}>
+                <Icon icon={Notification01Icon} size={17} />
+                <span className={styles.menuLabel}>Notifications</span>
+              </span>
+              {notificationCount > 0 && (
+                <span className={styles.badge}>{notificationCount}</span>
+              )}
+            </button>
+
+            {/* Documentation row */}
+            <button
+              type="button"
+              className={styles.menuRowBtn}
+              onClick={() => window.open('/README.md', '_blank')}
+              aria-label="Documentation"
+            >
+              <span className={styles.menuLeft}>
+                <Icon icon={BookOpen01Icon} size={17} />
+                <span className={styles.menuLabel}>Documentation</span>
+              </span>
+            </button>
+          </div>
+        )}
+
+        <button
+          type="button"
+          className={styles.profileBtn}
+          onClick={() => setProfileOpen((v) => !v)}
+          aria-expanded={profileOpen}
+          title="Your profile"
+        >
+          <span className={styles.avatar}>
+            <Icon icon={UserCircleIcon} size={22} />
+          </span>
+          {!collapsed && (
+            <>
+              <span className={styles.profileName}>You</span>
+              <Icon
+                icon={profileOpen ? ArrowUp01Icon : ArrowDown01Icon}
+                size={14}
+                className={styles.chevron}
+              />
+            </>
+          )}
+          {notificationCount > 0 && collapsed && (
+            <span className={styles.badgeDot} aria-label={`${notificationCount} notifications`} />
+          )}
+        </button>
+      </div>
+
+      {/* ── Mobile bottom nav ── */}
+      <div className={styles.mobileNav} aria-label="Quick navigation">
+        {MOBILE_ITEMS.map((item) => (
+          <button
+            key={item.id + item.label}
+            type="button"
+            className={activeId === item.id ? styles.mobileActive : styles.mobileItem}
+            onClick={() => go(item)}
+            title={item.label}
+          >
+            <Icon icon={item.icon} size={18} />
+            <span>{item.label}</span>
+          </button>
+        ))}
+      </div>
     </nav>
   )
 }

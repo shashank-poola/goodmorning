@@ -19,6 +19,7 @@ export function ComposeBar() {
   return (
     <div className={styles.compose}>
       <textarea
+        id="compose-input"
         className={styles.input}
         rows={1}
         placeholder="Write once, post everywhere…"

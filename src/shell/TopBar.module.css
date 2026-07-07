@@ -2,62 +2,67 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  padding: 11px 28px;
+  gap: 16px;
+  min-height: var(--header-height);
+  padding: 10px 20px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-panel);
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
-.quote {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 16px;
-  font-style: italic;
-  color: var(--text-primary);
-  border-left: 3px solid var(--accent-gold);
-  padding-left: 12px;
-  line-height: 1.35;
-  min-width: 0;
-  flex: 0 1 auto;
-}
-
-.quoteText {
-  color: var(--text-primary);
-}
-
-.author {
+.search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: min(400px, 100%);
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
   color: var(--text-secondary);
-  font-size: 15px;
-  font-style: normal;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.search:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-active);
+}
+
+.searchIcon {
+  flex-shrink: 0;
+}
+
+.searchText {
+  flex: 1;
+  text-align: left;
+  font-size: 13px;
+}
+
+.searchKbd {
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
   flex-shrink: 0;
-}
-
-.clockWrap {
-  text-align: right;
-  flex-shrink: 0;
-  border-left: 1px solid var(--border);
-  padding-left: 20px;
-}
-
-.date {
-  display: block;
-  color: var(--text-secondary);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 5px;
 }
 
 .clocks {
   display: flex;
-  justify-content: flex-end;
-  gap: 16px;
+  gap: 14px;
+  padding: 0 12px;
+  border-left: 1px solid var(--border);
 }
 
 .clock {
@@ -71,26 +76,27 @@
   color: var(--text-secondary);
   font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .time {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: var(--accent-gold);
-  text-shadow: var(--glow-gold);
+  color: var(--text-primary);
 }
 
 @media (max-width: 767px) {
+  .topbar {
+    padding: 10px 14px;
+  }
+
   .clocks {
-    gap: 12px;
+    display: none;
   }
-  .time {
-    font-size: 13px;
-  }
-  .right {
-    gap: 12px;
+
+  .search {
+    width: 100%;
   }
 }

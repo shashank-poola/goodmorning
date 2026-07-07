@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { provider } from '../data/providerFactory'
-import { useWidgetData } from '../components/useWidgetData'
-import { ThemeToggle } from './ThemeToggle'
+import { Search01Icon } from '@hugeicons/core-free-icons'
 import { DeviceBattery } from './DeviceBattery'
+import { Icon } from './Icon'
 import styles from './TopBar.module.css'
 
 const ZONES: Array<{ label: string; tz: string }> = [
@@ -18,55 +17,41 @@ function Clock() {
     return () => clearInterval(id)
   }, [])
 
-  const date = now.toLocaleDateString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    timeZone: 'Asia/Kolkata',
-  })
-
   return (
-    <div className={styles.clockWrap}>
-      <span className={styles.date}>{date}</span>
-      <div className={styles.clocks}>
-        {ZONES.map((z) => (
-          <div key={z.label} className={styles.clock}>
-            <span className={styles.zoneLabel}>{z.label}</span>
-            <span className={styles.time} data-testid={`clock-${z.label}`}>
-              {now.toLocaleTimeString('en-GB', { hour12: false, timeZone: z.tz })}
-            </span>
-          </div>
-        ))}
-      </div>
+    <div className={styles.clocks} aria-label="World clocks">
+      {ZONES.map((z) => (
+        <div key={z.label} className={styles.clock}>
+          <span className={styles.zoneLabel}>{z.label}</span>
+          <span className={styles.time} data-testid={`clock-${z.label}`}>
+            {now.toLocaleTimeString('en-GB', { hour12: false, timeZone: z.tz })}
+          </span>
+        </div>
+      ))}
     </div>
   )
 }
 
-const FALLBACK_QUOTE = {
-  text: 'Every morning is a fresh beginning.',
-  author: 'Proverb',
+interface Props {
+  onOpenSearch: () => void
 }
 
-export function TopBar() {
-  const { data, error } = useWidgetData(provider.getQuote)
-  const quote = data ?? (error ? FALLBACK_QUOTE : null)
+export function TopBar({ onOpenSearch }: Props) {
   return (
-    <header className={styles.topbar} id="top">
-      <p className={styles.quote}>
-        {quote ? (
-          <>
-            <span className={styles.quoteText}>&ldquo;{quote.text}&rdquo;</span>
-            <span className={styles.author}> — {quote.author}</span>
-          </>
-        ) : (
-          <span className={styles.quoteText}>&nbsp;</span>
-        )}
-      </p>
+    <header className={styles.topbar}>
+      <button
+        type="button"
+        className={styles.search}
+        onClick={onOpenSearch}
+        aria-label="Open command palette"
+      >
+        <Icon icon={Search01Icon} size={17} className={styles.searchIcon} />
+        <span className={styles.searchText}>Search</span>
+        <kbd className={styles.searchKbd}>Ctrl K</kbd>
+      </button>
+
       <div className={styles.right}>
         <DeviceBattery />
         <Clock />
-        <ThemeToggle />
       </div>
     </header>
   )

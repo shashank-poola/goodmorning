@@ -1,44 +1,32 @@
-import { useEffect, useState } from 'react'
-import { Sun, Moon } from 'lucide-react'
+import { useContext } from 'react'
+import { ThemeContext } from '../hooks/ThemeContext'
+import type { Theme } from '../hooks/useTheme'
 import styles from './ThemeToggle.module.css'
 
-type Theme = 'light' | 'dark'
-
-function getInitialTheme(): Theme {
-  try {
-    const stored = localStorage.getItem('gm-theme')
-    if (stored === 'light' || stored === 'dark') return stored
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    }
-  } catch {
-    /* localStorage/matchMedia unavailable — fall through */
-  }
-  return 'light'
+interface Props {
+  theme?: Theme
+  onToggle?: () => void
 }
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    try {
-      localStorage.setItem('gm-theme', theme)
-    } catch {
-      /* ignore write failures */
-    }
-  }, [theme])
-
+export function ThemeToggle({ theme: themeProp, onToggle: onToggleProp }: Props = {}) {
+  const ctx = useContext(ThemeContext)
+  const theme = themeProp ?? ctx?.theme ?? 'dark'
+  const onToggle = onToggleProp ?? ctx?.toggle ?? (() => {})
   const next = theme === 'dark' ? 'light' : 'dark'
+
   return (
     <button
       type="button"
-      className={styles.toggle}
-      onClick={() => setTheme(next)}
+      className={styles.switch}
+      role="switch"
+      aria-checked={theme === 'dark'}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
+      onClick={onToggle}
     >
-      {theme === 'dark' ? <Sun size={18} strokeWidth={1.9} /> : <Moon size={18} strokeWidth={1.9} />}
+      <span className={styles.track} data-theme={theme}>
+        <span className={styles.thumb} />
+      </span>
     </button>
   )
 }

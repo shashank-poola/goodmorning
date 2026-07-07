@@ -2,18 +2,17 @@
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px 22px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   min-height: 0;
   box-shadow: var(--elevation);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .panel:hover {
   border-color: var(--border-strong);
   box-shadow: var(--card-hover);
-  transform: translateY(-2px);
 }
 
 .title {

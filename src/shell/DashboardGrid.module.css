@@ -2,7 +2,7 @@
   flex: 1;
   display: grid;
   gap: var(--gap);
-  padding: var(--gap) 28px;
+  padding: var(--gap) 0 calc(var(--gap) + 8px);
   grid-template-columns: 1.15fr 1fr 1fr 1fr;
   /* Both rows are capped so cards scroll internally rather than growing to
      fit their content. */
