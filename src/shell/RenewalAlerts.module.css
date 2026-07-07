@@ -1,0 +1,114 @@
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 28px;
+  background: var(--accent-tint);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: var(--accent-clay);
+  flex-shrink: 0;
+}
+
+.count {
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  min-width: 0;
+  flex: 1;
+  scrollbar-width: none;
+}
+.items::-webkit-scrollbar {
+  display: none;
+}
+
+.item {
+  flex-shrink: 0;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  font-size: 12px;
+  transition: border-color 0.2s;
+}
+.chip:hover {
+  border-color: var(--accent-clay);
+}
+
+.chipLabel {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chipDue {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.chipDue[data-overdue='true'] {
+  color: var(--accent-clay);
+  font-weight: 600;
+}
+
+.view {
+  flex-shrink: 0;
+  padding: 5px 13px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-clay);
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.view:hover {
+  opacity: 0.9;
+}
+
+.dismiss {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  color: var(--text-secondary);
+  transition: color 0.2s, background 0.2s;
+}
+.dismiss:hover {
+  color: var(--text-primary);
+  background: var(--bg-raised);
+}
+
+@media (max-width: 767px) {
+  .bar {
+    padding: 8px 16px;
+    gap: 9px;
+  }
+  .count {
+    display: none;
+  }
+}

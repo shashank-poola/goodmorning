@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { provider } from '../data/providerFactory'
 import { useWidgetData } from '../components/useWidgetData'
+import { ThemeToggle } from './ThemeToggle'
+import { DeviceBattery } from './DeviceBattery'
 import styles from './TopBar.module.css'
 
 const ZONES: Array<{ label: string; tz: string }> = [
@@ -61,7 +63,11 @@ export function TopBar() {
           <span className={styles.quoteText}>&nbsp;</span>
         )}
       </p>
-      <Clock />
+      <div className={styles.right}>
+        <DeviceBattery />
+        <Clock />
+        <ThemeToggle />
+      </div>
     </header>
   )
 }

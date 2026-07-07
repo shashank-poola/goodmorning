@@ -10,7 +10,7 @@ function fmt(iso: string): string {
 export function CalendarWidget() {
   const state = useWidgetData(provider.getCalendar)
   return (
-    <Panel title="Today" accent="gold" id="calendar">
+    <Panel title="Meetings" accent="gold" id="calendar">
       <WidgetBody {...state} isEmpty={(d) => d.events.length === 0}>
         {({ sources, events }) => {
           const colorOf = (sourceId: string) =>

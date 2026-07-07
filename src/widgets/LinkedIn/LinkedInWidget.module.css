@@ -1,7 +1,7 @@
 .columns {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr 2fr;
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   height: 100%;
 }
 

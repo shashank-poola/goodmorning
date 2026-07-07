@@ -2,32 +2,48 @@
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px 16px;
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
   min-height: 0;
   box-shadow: var(--elevation);
-  transition: border-color 0.45s ease, box-shadow 0.45s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .panel:hover {
-  border-color: var(--hairline-gold);
-  box-shadow: var(--elevation), 0 0 0 1px var(--hairline-gold);
+  border-color: var(--border-strong);
+  box-shadow: var(--card-hover);
+  transform: translateY(-2px);
 }
 
 .title {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
+  color: var(--text-primary);
+  padding-bottom: 11px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
 }
 
-.panel[data-accent='sage'] .title { color: var(--accent-sage); }
-.panel[data-accent='blue'] .title { color: var(--accent-blue); }
-.panel[data-accent='clay'] .title { color: var(--accent-clay); }
-.panel[data-accent='gold'] .title { color: var(--text-secondary); }
+/* Prominent per-section accent tab before each heading. */
+.title::before {
+  content: '';
+  width: 4px;
+  height: 15px;
+  border-radius: 2px;
+  background: var(--accent-gold);
+  flex-shrink: 0;
+}
+
+.panel[data-accent='sage'] .title::before { background: var(--accent-sage); }
+.panel[data-accent='blue'] .title::before { background: var(--accent-blue); }
+.panel[data-accent='clay'] .title::before { background: var(--accent-clay); }
+.panel[data-accent='gold'] .title::before { background: var(--accent-gold); }
 
 .body {
   flex: 1;

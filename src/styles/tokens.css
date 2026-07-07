@@ -1,25 +1,50 @@
 :root {
-  /* Midnight Luxe — charcoal base, champagne gold, muted color-coding */
-  --bg-base: #0f1012;
-  --bg-panel: #1f2127;
-  --bg-raised: #282a30;
-  --border: #100f12;
-  --text-primary: #ede9e1;
-  --text-secondary: #97928a;
+  /* ---- Light (Airbnb-clean) — default ---- */
+  --bg-base: #f7f7f7;
+  --bg-panel: #ffffff;
+  --bg-raised: #f7f7f7;
+  --border: #ebebeb;
+  --border-strong: #dddddd;
+  --text-primary: #222222;
+  --text-secondary: #717171;
 
-  /* Accents map to roles, not decoration:
-     gold = primary/live · sage = positive · blue = calm/social · clay = urgent */
-  --accent-gold: #d4b678;
-  --accent-sage: #8fa98c;
-  --accent-blue: #7c93a8;
-  --accent-clay: #c08457;
+  /* Role-based accents (names kept so widget styles map through unchanged):
+     coral = primary/live · green = positive · blue = calm/social · red = urgent */
+  --accent-gold: #ff385c;
+  --accent-sage: #008a05;
+  --accent-blue: #2f6fed;
+  --accent-clay: #c13515;
+  --accent-tint: rgba(255, 56, 92, 0.08);
 
-  --font-ui: 'Instrument Sans', system-ui, sans-serif;
-  --font-display: 'Newsreader', Georgia, serif;
+  --font-ui: 'Sora', system-ui, -apple-system, sans-serif;
+  --font-display: 'Sora', system-ui, sans-serif;
 
-  --radius: 10px;
-  --gap: 16px;
-  --glow-gold: 0 0 10px rgba(212, 182, 120, 0.28);
-  --elevation: 0 1px 2px rgba(0, 0, 0, 0.28);
-  --hairline-gold: rgba(212, 182, 120, 0.22);
+  --radius: 12px;
+  --gap: 20px;
+  --glow-gold: none;
+  --elevation: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --card-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --hairline-gold: rgba(255, 56, 92, 0.35);
+}
+
+:root[data-theme='dark'] {
+  /* ---- Dark (Midnight-clean) ---- */
+  --bg-base: #0f1013;
+  --bg-panel: #191b1f;
+  --bg-raised: #23262b;
+  --border: #2a2d33;
+  --border-strong: #3a3e45;
+  --text-primary: #ededed;
+  --text-secondary: #9aa0a8;
+
+  --accent-gold: #ff5a6e;
+  --accent-sage: #4ade80;
+  --accent-blue: #6ea8ff;
+  --accent-clay: #f0743f;
+  --accent-tint: rgba(255, 90, 110, 0.14);
+
+  --glow-gold: none;
+  --elevation: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --card-hover: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --hairline-gold: rgba(255, 90, 110, 0.4);
 }

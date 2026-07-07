@@ -2,3 +2,7 @@ node_modules
 dist
 *.local
 .gstack/
+.env
+server/.env
+server/.data/
+server/.data-test/

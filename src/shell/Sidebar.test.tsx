@@ -8,8 +8,15 @@ it('scrolls to the target widget on click', async () => {
   target.scrollIntoView = vi.fn()
   document.body.appendChild(target)
 
-  render(<Sidebar />)
+  render(<Sidebar onOpenFinance={vi.fn()} />)
   await userEvent.click(screen.getByRole('button', { name: /calendar/i }))
   expect(target.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
   target.remove()
+})
+
+it('opens the finance drawer instead of scrolling on Finance click', async () => {
+  const onOpenFinance = vi.fn()
+  render(<Sidebar onOpenFinance={onOpenFinance} />)
+  await userEvent.click(screen.getByRole('button', { name: /finance/i }))
+  expect(onOpenFinance).toHaveBeenCalledOnce()
 })

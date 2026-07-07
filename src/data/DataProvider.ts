@@ -1,12 +1,15 @@
 import type {
+  BluetoothDevice,
   CalendarEvent,
   CalendarSource,
   Email,
+  FinanceData,
   LinkedInData,
   Mailbox,
   NewsItem,
   Quote,
   Reminder,
+  Renewal,
   RepoTrend,
   StockQuote,
   Todo,
@@ -33,4 +36,7 @@ export interface DataProvider {
   getUsageStats(): Promise<UsageStats>
   getReminders(): Promise<Reminder[]>
   getStocks(): Promise<StockQuote[]>
+  getDevices(): Promise<BluetoothDevice[]>
+  getRenewals(): Promise<Renewal[]>
+  getFinance(): Promise<FinanceData>
 }

@@ -118,3 +118,99 @@ export interface StockQuote {
   price: number
   changePct: number // vs yesterday; negative = down
 }
+
+export type DeviceKind =
+  | 'earbuds'
+  | 'headphones'
+  | 'watch'
+  | 'mouse'
+  | 'keyboard'
+  | 'speaker'
+  | 'phone'
+
+export interface BluetoothDevice {
+  id: string
+  name: string
+  kind: DeviceKind
+  batteryPct: number // 0–100
+  connected: boolean
+}
+
+// ---- Finance & renewals ----
+
+/** Who an expense/renewal belongs to. Company = business liability. */
+export type Entity = 'personal' | 'company'
+
+export type Cadence = 'weekly' | 'monthly' | 'yearly'
+
+export type ExpenseCategory =
+  | 'software'
+  | 'subscription'
+  | 'insurance'
+  | 'domain'
+  | 'vehicle'
+  | 'tax'
+  | 'utilities'
+  | 'office'
+  | 'health'
+  | 'travel'
+  | 'other'
+
+/** A funding source — "which account was it paid from". */
+export interface Account {
+  id: string
+  name: string // "Amex Business", "HSBC Personal"
+  entity: Entity
+  last4?: string
+  color: AccentColor
+}
+
+/** A commitment that repeats on a cadence (subscriptions, insurance, memberships). */
+export interface RecurringExpense {
+  id: string
+  name: string
+  amount: number
+  cadence: Cadence
+  nextChargeDate: string // ISO date
+  accountId: string
+  entity: Entity
+  category: ExpenseCategory
+}
+
+/** A single, one-off transaction. */
+export interface Expense {
+  id: string
+  description: string
+  amount: number
+  date: string // ISO date
+  accountId: string
+  entity: Entity
+  category: ExpenseCategory
+}
+
+export type RenewalKind =
+  | 'domain'
+  | 'mot'
+  | 'insurance'
+  | 'subscription'
+  | 'tax'
+  | 'license'
+  | 'other'
+
+/** A time-sensitive thing to renew/act on — surfaced on the dashboard. */
+export interface Renewal {
+  id: string
+  label: string
+  kind: RenewalKind
+  dueDate: string // ISO date
+  entity: Entity
+  amount?: number
+  accountId?: string
+}
+
+/** Bundle returned by the Finance section's single fetch. */
+export interface FinanceData {
+  accounts: Account[]
+  recurring: RecurringExpense[]
+  expenses: Expense[]
+}

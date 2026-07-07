@@ -11,12 +11,13 @@ export function EmailsWidget() {
   const state = useWidgetData(provider.getEmails)
   return (
     <Panel title="Important Emails" accent="clay" id="emails">
-      <WidgetBody {...state} isEmpty={(d) => d.emails.length === 0}>
+      <WidgetBody {...state} isEmpty={(d) => d.emails.filter((e) => e.unread).length === 0}>
         {({ mailboxes, emails }) => {
           const colorOf = (id: string) => mailboxes.find((m) => m.id === id)?.color ?? 'gold'
+          const important = emails.filter((e) => e.unread)
           return (
             <ul className={styles.list}>
-              {emails.map((e) => (
+              {important.map((e) => (
                 <li key={e.id} className={e.unread ? styles.unread : styles.email}>
                   <span className={styles.dot} data-testid="mailbox-dot" data-color={colorOf(e.mailboxId)} />
                   <span className={styles.content}>
